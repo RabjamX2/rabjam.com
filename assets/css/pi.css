@@ -7,8 +7,11 @@
 
 /* Light mode styles */
 body {
+    display: flex;
+    flex-direction: column;
     background-color: #f4f4f4;
     color: #333;
+    min-height: 100vh;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -42,11 +45,44 @@ nav ul li a {
     color: #fff;
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content-container {
+    display: none;
+    position: absolute;
+    float: left;
+    background-color: #808080;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content {
+    display: block;
+    width: 100%;
+    clear: both;
+    font-weight: 400;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: inherit;
+    white-space: nowrap;
+}
+
+.dropdown:hover .dropdown-content-container {
+    display: block;
+}
+
 #dark-mode-toggle {
     margin-left: auto;
     padding: 10px 10px;
-    background-color: #696969;
-    color: #fff;
+    background-color: #fbff00;
+    color: #000000;
     text-decoration: none;
     border: none;
     border-radius: 5px;
@@ -55,8 +91,8 @@ nav ul li a {
 }
 
 #dark-mode-toggle.dark-mode {
-    background-color: #fbff00;
-    color: #000000;
+    background-color: #696969;
+    color: #fff;
 }
 
 /* Logo styles */
@@ -69,7 +105,9 @@ nav ul li a {
 
 /* Main content styles */
 main {
+    position: relative;
     padding: 40px;
+    flex-grow: 1;
 }
 
 .hero {
@@ -105,11 +143,9 @@ main {
 /* Footer styles */
 footer {
     text-align: center;
-    padding: 20px 0;
     background-color: #333;
     color: #fff;
     font-size: 14px;
-    margin-bottom: 0;
 }
 
 /* Responsive styles */
@@ -176,14 +212,16 @@ canvas {
 /* Styling for the result names */
 .result-name {
     flex: 1;
-    width: 8em;
+    max-width: 8em;
     font-weight: bold;
     margin-right: 10px; /* Adjust the spacing between name and value */
+    /* background-color: #fbff00; */
 }
 
 /* Styling for the result values */
 .result-value {
     flex: 1;
+    /* background-color: #000000; */
 }
 
 #iterations {

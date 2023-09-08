@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                border: 1px solid #000;
+                background-color: gray;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="hexGrid" width="9000" height="6000"></canvas>
+
+        <script>
+            const canvas = document.getElementById("hexGrid");
+            const ctx = canvas.getContext("2d");
+
+            const hexWidth = 50; // Width of a single hexagon
+            const hexRadius = hexWidth / 2;
+            const hexApothem = (hexWidth / 4) * Math.sqrt(3);
+            const hexHeight = hexApothem * 2;
+
+            ctx.translate(canvas.width / 2, canvas.height / 2); // To make the middle 0,0
+            ctx.scale(0.5, 0.5);
+            const centerX = 0;
+            const centerZ = 0;
+
+            let tileIndex;
+
+            const grayScaleDict = [
+                "rgb(0,0,0)",
+                "rgb(28,28,28)",
+                "rgb(56,56,56)",
+                "rgb(84,84,84)",
+                "rgb(112,112,112)",
+                "rgb(140,140,140)",
+                "rgb(168,168,168)",
+                "rgb(196,196,196)",
+                "rgb(224,224,224)",
+                "rgb(255,255,255)",
+            ];
+            const colorDict = ["Red", "Green", "Blue", "Yellow", "Cyan", "Magenta", "Orange", "Purple", "Lime", "Pink"];
+
+            function getColor(method) {
+                switch (method) {
+                    case "remainder":
+                        let remainder = tileIndex % 10;
+                        if (remainder <= 9) {
+                            return colorDict[remainder];
+                        } else {
+                            return "black"; //colorDict[remainder];
+                        }
+
+                    case "random":
+                        const randomColorIndex = Math.floor(Math.random() * colorDict.length); // Generate a random index
+                        return colorDict[randomColorIndex]; // Get a random color from colorDict
+
+                    case "linear":
+                        color = tileIndex * (255 / 720);
+                        return "rgb(" + color + "," + color + "," + color + ")";
+
+                    case "test":
+                        let testRemainder = tileIndex % 6;
+                        if (testRemainder <= 9) {
+                            if (testRemainder == 0) {
+                                return colorDict[tileIndex % 9];
+                            }
+                            return colorDict[testRemainder];
+                        } else {
+                            return "black";
+                        }
+                    case "patterned":
+                        const pattern = [9, 2, 7, 6, 5, 4, 3, 2, 1, 0, 3, 8, 6, 4]; // Define a pattern of color indices2
+                        const patternedColorIndex = pattern[tileIndex % pattern.length]; // Get a color index from the pattern
+                        return colorDict[patternedColorIndex]; // Get a color from colorDict based on the index
+
+                    case "sequential":
+                        const sequentialColorIndex = tileIndex % colorDict.length; // Calculate the color index
+                        return colorDict[sequentialColorIndex]; // Get a color from colorDict based on the index
+                    case "rings":
+                        const quadraticOutput = Math.ceil((-3 + Math.sqrt(9 + 12 * tileIndex)) / 6);
+                        return colorDict[quadraticOutput % 10]; // Get a color from colorDict based on the index
+                    case "highestAndLowestNumber":
+                        if (tileIndex % 50 == 0) {
+                            return "black"; //colorDict[0];
+                        } else if (tileIndex > 270) {
+                            return "white"; //colorDict[String(tileIndex).split("").sort().slice(1)[0]];
+                        } else {
+                            return "white"; //colorDict[String(tileIndex).split("").sort().slice(-1)[0]];
+                        }
+                    case "isPrime":
+                        if (tileIndex == 0) {
+                            return "yellow";
+                        }
+                        return isPrime(tileIndex) ? "black" : "white";
+                    case "pallette":
+                        const rgbList = [
+                            "rgb(0, 0, 127)", // 1: Blue
+                            "rgb(0, 0, 254)", // 2: Light Blue
+                            "rgb(0, 127, 0)", // 3: Green
+                            "rgb(0, 127, 127)", // 4: Teal
+                            "rgb(0, 127, 254)", // 5: Sky Blue
+                            "rgb(0, 254, 0)", // 6: Lime Green
+                            "rgb(0, 254, 254)", // 7: Cyan
+                            "rgb(127, 0, 0)", // 8: Red
+                            "rgb(127, 0, 127)", // 9: Magenta
+                            "rgb(127, 0, 254)", // 10: Purple
+                            "rgb(127, 127, 0)", // 11: Yellow-Green
+                            "rgb(127, 127, 127)", // 12: Gray
+                            "rgb(127, 127, 254)", // 13: Lavender
+                            "rgb(254, 0, 0)", // 14: Bright Red
+                            "rgb(254, 0, 127)", // 15: Pink
+                            "rgb(254, 127, 0)", // 16: Orange
+                            "rgb(254, 127, 127)", // 17: Light Salmon
+                            "rgb(254, 127, 254)", // 18: Orchid
+                            "rgb(254, 254, 0)", // 19: Yellow
+                        ];
+
+                        return rgbList[tileIndex % 19];
+                    default:
+                        break;
+                }
+            }
+
+            function getLayer() {
+                const totalTiles = 3 * layers ** 2 + 3 * layers;
+            }
+            function isPrime(number) {
+                if (number === 1) {
+                    return false;
+                } else if (number > 1) {
+                    for (let i = 2; i < number; i++) {
+                        if (number % i == 0) {
+                            return false;
+                        }
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            function findLayer(tileNumber) {
+                quadraticOutput = (-3 + Math.sqrt(9 + 12 * tileNumber)) / 6;
+                return Math.ceil(quadraticOutput);
+            }
+            function drawHex(y, x) {
+                y *= -1; // to make coordinate system cartesian
+                ctx.beginPath();
+                ctx.moveTo(x + hexRadius / 2, y + hexApothem);
+                ctx.lineTo(x + hexRadius, y);
+                ctx.lineTo(x + hexRadius / 2, y - hexApothem);
+                ctx.lineTo(x - hexRadius / 2, y - hexApothem);
+                ctx.lineTo(x - hexRadius, y);
+                ctx.lineTo(x - hexRadius / 2, y + hexApothem);
+                ctx.closePath();
+                ctx.fillStyle = getColor("pallette"); //getColor("patterned");
+                ctx.fill();
+                ctx.font = "20px Arial";
+                ctx.textAlign = "center";
+                ctx.fillStyle = "rgb(0,255,255)";
+                //ctx.fillText(tileIndex, x, y + 5);
+                tileIndex += 1;
+            }
+
+            function makeGrid(layers) {
+                tileIndex = 0;
+
+                const ZOffset = hexWidth * 0.75;
+                const XOffset = hexHeight * 0.5;
+
+                let x = centerX;
+                let z = centerZ;
+
+                // Center hexagon
+                drawHex(x, z);
+                x += XOffset;
+                z += ZOffset;
+                drawHex(x, z);
+                for (let layerIndex = 1; layerIndex <= layers; layerIndex++) {
+                    for (let i = 2; i <= layerIndex; i++) {
+                        x -= XOffset;
+                        z += ZOffset;
+                        drawHex(x, z);
+                    }
+                    for (let i = 1; i <= layerIndex; i++) {
+                        x -= hexHeight;
+                        drawHex(x, z);
+                    }
+
+                    for (let i = 1; i <= layerIndex; i++) {
+                        x -= XOffset;
+                        z -= ZOffset;
+                        drawHex(x, z);
+                    }
+
+                    for (let i = 1; i <= layerIndex; i++) {
+                        x += XOffset;
+                        z -= ZOffset;
+                        drawHex(x, z);
+                    }
+                    for (let i = 1; i <= layerIndex; i++) {
+                        x += hexHeight;
+                        drawHex(x, z);
+                    }
+                    for (let i = 1; i <= layerIndex; i++) {
+                        x += XOffset;
+                        z += ZOffset;
+                        drawHex(x, z);
+                    }
+                    if (layerIndex != layers) {
+                        x += XOffset;
+                        z += ZOffset;
+                        drawHex(x, z);
+                    } else {
+                        const lastTileCoord = { X: x, Z: z };
+                    }
+                }
+            }
+
+            makeGrid(150);
+        </script>
+    </body>
+</html>

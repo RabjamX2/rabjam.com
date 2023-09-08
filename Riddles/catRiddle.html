@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cat Box Riddle Game</title>
+        <link rel="stylesheet" href="/assets/css/pi.css" />
+        <style>
+            #game-history {
+                margin-top: 20px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                text-align: left;
+            }
+            .guess-success {
+                color: green;
+            }
+            .guess-fail {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#">Riddles</a>
+                        <div class="dropdown-content-container">
+                            <a class="dropdown-content" href="/Riddles/catRiddle.html">Cat-in-a-box</a>
+                            <a class="dropdown-content" href="#">Option 2</a>
+                            <a class="dropdown-content" href="#">Option 3</a>
+                        </div>
+                    </li>
+                    <li><a href="#">Gadgets</a></li>
+                    <li class="dropdown">
+                        <a href="#">Sandbox</a>
+                        <div class="dropdown-content-container">
+                            <a class="dropdown-content" href="/Sandbox/hexGen.html">Spiral Hexagon</a>
+                            <a class="dropdown-content" href="#">Option 2</a>
+                            <a class="dropdown-content" href="#">Option 3</a>
+                        </div>
+                    </li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </nav>
+            <button id="dark-mode-toggle">Dark Mode</button>
+
+            <div class="logo">
+                <img src="logo.png" alt="logo" />
+            </div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <h1>Cat Box Riddle Game</h1>
+            </section>
+
+            <label for="guess-list">Guess Order (comma-separated):</label>
+            <input type="text" id="guess-list" value="" />
+            <br />
+            <label for="game-count">Number of Games:</label>
+            <input type="number" id="game-count" value="1" min="1" />
+            <button id="start-button">Start Game</button>
+            <div id="game-history"></div>
+        </main>
+
+        <footer>
+            <p>&copy; RabjamX2</p>
+        </footer>
+        <script>
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            let catHistory = [];
+            let guessHistory = [];
+            let numberOfBoxes, catBox;
+
+            function startGame(Boxes) {
+                numberOfBoxes = Boxes;
+                const startingCatBox = getRandomInt(1, numberOfBoxes);
+                catHistory = [];
+                guessHistory = [];
+                catHistory.push(startingCatBox);
+                catBox = startingCatBox;
+            }
+
+            function riddle(guess) {
+                guessHistory.push(guess);
+                if (guess === catBox) {
+                    return catHistory;
+                } else {
+                    if (catBox === 1) {
+                        catBox += 1;
+                    } else if (catBox === numberOfBoxes) {
+                        catBox -= 1;
+                    } else {
+                        catBox += Math.pow(-1, getRandomInt(1, 2));
+                    }
+                    catHistory.push(catBox);
+                    return false;
+                }
+            }
+
+            const startButton = document.getElementById("start-button");
+            const gameHistory = document.getElementById("game-history");
+            const gameCountInput = document.getElementById("game-count");
+            const guessListInput = document.getElementById("guess-list");
+
+            startButton.addEventListener("click", () => {
+                const gameCount = parseInt(gameCountInput.value);
+                let customGuessList = guessListInput.value.split(",").map((guess) => guess.trim());
+                customGuessList.push(false);
+
+                if (!isNaN(gameCount) && gameCount > 0) {
+                    playGames(gameCount, customGuessList);
+                } else {
+                    alert("Please enter a valid number of games.");
+                }
+            });
+
+            function playGames(count, customGuessList) {
+                gameHistory.innerHTML = "";
+                for (let i = 0; i < count; i++) {
+                    startGame(5);
+                    const gameResult = document.createElement("div");
+                    gameResult.className = "game-result";
+                    gameResult.innerHTML = `<h5>Game ${i + 1} results:</h5>`;
+
+                    for (const guess of customGuessList) {
+                        if (guess) {
+                            const parsedGuess = isNaN(guess) ? guess : parseInt(guess);
+                            const result = riddle(parsedGuess);
+                            if (result) {
+                                const historyMessage = `Guessed in ${
+                                    guessHistory.length
+                                } guesses.<br>Ze cat history: ${catHistory.join(
+                                    ", "
+                                )}<br>Your guesses: ${guessHistory.join(", ")}`;
+                                const historyEntry = document.createElement("p");
+                                historyEntry.innerHTML = historyMessage;
+                                historyEntry.className = "guess-success";
+                                gameResult.appendChild(historyEntry);
+                                break;
+                            }
+                        } else {
+                            const historyMessage = `Failed to guess.<br>Ze cat history: ${catHistory.join(
+                                ", "
+                            )}<br>Your guesses: ${guessHistory.join(", ")}`;
+                            const historyEntry = document.createElement("p");
+                            historyEntry.innerHTML = historyMessage;
+                            historyEntry.className = "guess-fail";
+                            gameResult.appendChild(historyEntry);
+                        }
+                    }
+
+                    gameHistory.appendChild(gameResult);
+                }
+            }
+        </script>
+        <script src="/assets/js/index.js"></script>
+    </body>
+</html>
