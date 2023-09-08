@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>RabjamX2</title>
+        <link rel="stylesheet" href="pi.css" />
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Riddles</a></li>
+                    <li><a href="#">Gadgets</a></li>
+                    <li><a href="#">Sandbox</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </nav>
+            <button id="dark-mode-toggle">Dark Mode</button>
+
+            <div class="logo">
+                <img src="logo.png" alt="logo" />
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <section class="hero">
+                <h1>Calculating Pi using randomness</h1>
+                <!-- <p>Discover the latest products and innovations from Apple.</p> -->
+                <!-- <a href="#" class="cta-button">Learn More</a> -->
+            </section>
+
+            <section class="display">
+                <div class="canvas-container">
+                    <canvas id="piRandom"></canvas>
+                </div>
+
+                <!-- Number Input and Display Boxes (stacked) -->
+                <div class="number-boxes">
+                    <!-- Number Input Box -->
+                    <div class="result-item">
+                        <span class="result-name">Add Points:</span>
+                        <div class="result-value">
+                            <input id="iterations" inputmode="numeric" pattern="\d*" />
+                            <button type="submit" id="calculate-button">Add</button>
+                        </div>
+                    </div>
+
+                    <!-- Number Display Boxes -->
+                    <div class="number-display">
+                        <div class="result-item">
+                            <span class="result-name">Points Inside:</span>
+                            <span class="result-value" id="points-inside"></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-name">Points Outside:</span>
+                            <span class="result-value" id="points-outside"></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-name">Total Points:</span>
+                            <span class="result-value" id="total-outside"></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-name">Inside/Total:</span>
+                            <span class="result-value" id="inside-total-ratio"></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-name">Ratio * 4 = </span>
+                            <span class="result-value" id="ratio-multiplied"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; RabjamX2</p>
+        </footer>
+        <script src="script.js"></script>
+    </body>
+</html>
