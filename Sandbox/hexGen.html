@@ -1,27 +1,248 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="/assets/css/styles.css" />
         <style>
-            canvas {
-                border: 1px solid #000;
+            header {
+                background-color: #333;
+                color: #fff;
+                padding: 0;
+                position: sticky;
+                top: 0;
+                left: 0;
+                height: 2vw;
+                margin-left: 0;
+                margin-right: 0;
+                width: 100vw;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 1vw;
+                flex-direction: row;
+                z-index: 4;
+            }
+            nav ul {
+                margin-top: 0;
+            }
+            nav ul li {
+                margin-right: 1vw;
+            }
+
+            #dark-mode-toggle {
+                margin-left: auto;
+                margin-right: 0;
+                margin-top: 0.1vh;
+                margin-bottom: 0.1vh;
+                padding: 0 0.3vw;
+                height: 2vh;
+                font-size: 0.7vw;
+                border: none;
+                border-radius: 0.2vw;
+                transition: background-color 0.3s ease;
+            }
+
+            #logo {
+                margin-left: 0;
+                margin-right: 0;
+                padding: 0 0.3vw;
+                height: 2vh;
+                width: 3vw;
+                font-size: 1vw;
+                text-align: center;
+                justify-content: center;
+            }
+
+            main {
+                padding: 0;
+                display: flex;
+                flex-direction: row;
+                align-items: left;
+                margin-top: 0;
+                margin-left: 0;
+            }
+
+            #hexGrid {
+                /* display: flex; */
+                width: 92vw;
+                height: 95vh;
+                padding: 0;
+                margin-top: 0.5vh;
+                margin-left: 0.5vh;
+                margin-right: 0;
+                top: 7vh;
+                border: 0.01rem solid #000;
                 background-color: gray;
+                flex-direction: row;
+            }
+
+            #toolbox {
+                display: flex;
+                position: relative;
+                background-color: #333;
+                color: #fff;
+                padding: 0;
+                margin-top: 0.5vh;
+                margin-bottom: 0.5vh;
+                margin-left: 0;
+                margin-right: 0;
+                width: 7.32vw;
+                align-items: flex-start; /* Align items to the left within the column */
+                font-size: 1vw;
+                flex-direction: row;
+                z-index: 3;
+            }
+
+            .number-boxes {
+                margin: 0 0;
+                width: 7.32vw;
+            }
+
+            #calculate-button {
+                height: 1.7vh;
+                width: 1vw;
+                font-size: 0.5vw;
+                border: 0;
+            }
+
+            .number-input {
+                margin-top: 0.8vh; /* Add spacing between the input and display boxes */
+            }
+
+            .number-display {
+                margin-top: 0.8vh; /* Add spacing between the input and display boxes */
+            }
+
+            .result-item {
+                justify-content: left;
+                align-items: center;
+                margin-bottom: 3vh;
+                margin-left: 0.5vh;
+                max-width: 7.32vw;
+            }
+
+            /* Styling for the result names */
+            .result-name {
+                font-weight: bold;
+                margin-bottom: 0.5vh;
+            }
+
+            .result-value input {
+                font-size: 1em;
+                width: 5em;
+                color: white;
+                background-color: #8d8d8d;
+                border: none;
+            }
+
+            .result-value button {
+                padding: 0 0.3vw;
+                height: 3vh;
+                width: 4vw;
+                font-size: 0.7vw;
+                border: none;
+                border-radius: 0.2vw;
+                background-color: #8a8a8a;
+            }
+
+            .result-value select {
+                font-size: 0.7vw;
+                margin-top: 0.7vh;
+                height: 2vh;
+                width: 6vw;
+                background-color: #e9e9e9;
+            }
+
+            #generate:hover {
+                background-color: rgb(122, 122, 122);
+            }
+            #generate:active {
+                background-color: green;
+            }
+
+            #clearCanvas:hover {
+                background-color: rgb(122, 122, 122);
+            }
+            #clearCanvas:active {
+                background-color: rgb(192, 0, 0);
             }
         </style>
     </head>
     <body>
-        <canvas id="hexGrid" width="9000" height="6000"></canvas>
-
+        <!-- Header -->
+        <header id="headerPlaceholder"></header>
+        <main>
+            <canvas id="hexGrid"></canvas>
+            <!-- Main Content -->
+            <div id="toolbox">
+                <div class="number-boxes">
+                    <!-- Number Input Box -->
+                    <div class="number-input">
+                        <div class="result-item">
+                            <span class="result-name">Hex Size:</span>
+                            <div class="result-value">
+                                <input id="hexSizeInput" type="text" inputmode="numeric" pattern="\d*" value="10" />
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-name"># of Layers:</span>
+                            <div class="result-value">
+                                <input id="totalLayers" type="text" inputmode="numeric" pattern="\d*" value="5" />
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-name">Color Method:</span>
+                            <div class="result-value">
+                                <select name="Color Methods" id="selectColorMethod"></select>
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">
+                                <button id="generate">Generate</button>
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">
+                                <button id="clearCanvas">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Number Display Boxes -->
+                    <div class="number-display">
+                        <div class="result-item">
+                            <div class="result-name">Hex Size:</div>
+                            <div class="result-value" id="hexSize"></div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-name">Total Hexes:</div>
+                            <div class="result-value" id="totalHexes"></div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-name">Color Method:</div>
+                            <div class="result-value" id="colorMethod"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- End Scripts -->
+        <script src="/assets/js/injector.js"></script>
         <script>
             const canvas = document.getElementById("hexGrid");
+            const canvasHeight = canvas.height * 10;
+            const canvasWidth = canvas.width * 10;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+
             const ctx = canvas.getContext("2d");
 
-            const hexWidth = 50; // Width of a single hexagon
-            const hexRadius = hexWidth / 2;
-            const hexApothem = (hexWidth / 4) * Math.sqrt(3);
-            const hexHeight = hexApothem * 2;
+            let totalLayers = document.getElementById("totalLayers");
+            let hexWidth = document.getElementById("hexSizeInput"); // Width of a single hexagon
+            let colorMethod = "random";
+            let hexRadius = hexWidth / 2;
+            let hexApothem = (hexWidth / 4) * Math.sqrt(3);
+            let hexHeight = hexApothem * 2;
 
             ctx.translate(canvas.width / 2, canvas.height / 2); // To make the middle 0,0
-            ctx.scale(0.5, 0.5);
+            //ctx.scale(0.5, 0.5);
             const centerX = 0;
             const centerZ = 0;
 
@@ -40,6 +261,30 @@
                 "rgb(255,255,255)",
             ];
             const colorDict = ["Red", "Green", "Blue", "Yellow", "Cyan", "Magenta", "Orange", "Purple", "Lime", "Pink"];
+
+            let colorMethodSelector = document.getElementById("selectColorMethod");
+            // console.log(colorMethodSelector.value);
+
+            const colorMethods = [
+                "remainder",
+                "random",
+                "linear",
+                "test",
+                "patterned",
+                "sequential",
+                "rings",
+                "highestAndLowestNumber",
+                "isPrime",
+                "palette",
+            ];
+
+            for (let i = 0; i < colorMethods.length; i++) {
+                const method = colorMethods[i];
+                const option = document.createElement("option");
+                option.value = method; // Set the option's value
+                option.textContent = method; // Set the text content
+                colorMethodSelector.appendChild(option); // Append the option to the select element
+            }
 
             function getColor(method) {
                 switch (method) {
@@ -93,7 +338,7 @@
                             return "yellow";
                         }
                         return isPrime(tileIndex) ? "black" : "white";
-                    case "pallette":
+                    case "palette":
                         const rgbList = [
                             "rgb(0, 0, 127)", // 1: Blue
                             "rgb(0, 0, 254)", // 2: Light Blue
@@ -122,8 +367,8 @@
                 }
             }
 
-            function getLayer() {
-                const totalTiles = 3 * layers ** 2 + 3 * layers;
+            function getLayers(layers) {
+                return 3 * layers ** 2 + 3 * layers;
             }
             function isPrime(number) {
                 if (number === 1) {
@@ -144,6 +389,7 @@
                 return Math.ceil(quadraticOutput);
             }
             function drawHex(y, x) {
+                console.log("drew");
                 y *= -1; // to make coordinate system cartesian
                 ctx.beginPath();
                 ctx.moveTo(x + hexRadius / 2, y + hexApothem);
@@ -153,11 +399,11 @@
                 ctx.lineTo(x - hexRadius, y);
                 ctx.lineTo(x - hexRadius / 2, y + hexApothem);
                 ctx.closePath();
-                ctx.fillStyle = getColor("pallette"); //getColor("patterned");
+                ctx.fillStyle = getColor(colorMethod); //getColor("patterned");
                 ctx.fill();
-                ctx.font = "20px Arial";
-                ctx.textAlign = "center";
-                ctx.fillStyle = "rgb(0,255,255)";
+                // ctx.font = "20px Arial";
+                // ctx.textAlign = "center";
+                // ctx.fillStyle = "rgb(0,255,255)";
                 //ctx.fillText(tileIndex, x, y + 5);
                 tileIndex += 1;
             }
@@ -217,7 +463,26 @@
                 }
             }
 
-            makeGrid(150);
+            const generate = document.getElementById("generate");
+            generate.addEventListener("click", () => {
+                totalLayers = Number(document.getElementById("totalLayers").value);
+                colorMethod = document.getElementById("selectColorMethod").value;
+                hexWidth = Number(document.getElementById("hexSizeInput").value); // Width of a single hexagon
+                hexRadius = hexWidth / 2;
+                hexApothem = (hexWidth / 4) * Math.sqrt(3);
+                hexHeight = hexApothem * 2;
+
+                document.getElementById("hexSize").innerHTML = hexWidth;
+                document.getElementById("totalHexes").innerHTML = getLayers(totalLayers) + 1;
+                document.getElementById("colorMethod").innerHTML = colorMethod;
+
+                makeGrid(totalLayers);
+            });
+
+            const clearCanvas = document.getElementById("clearCanvas");
+            clearCanvas.addEventListener("click", () => {
+                ctx.clearRect(0 - canvas.width / 2, 0 - canvas.height / 2, canvas.width, canvas.height);
+            });
         </script>
     </body>
 </html>
