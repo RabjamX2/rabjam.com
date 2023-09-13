@@ -104,7 +104,20 @@ nav ul li a {
     font-weight: 400;
     padding-top: 5px;
     padding-bottom: 5px;
-    padding-left: 10px;
+    padding-left: 15px;
+    padding-right: 10px;
+    text-align: inherit;
+    white-space: nowrap;
+}
+
+.dropdown-header {
+    display: block;
+    width: 100%;
+    clear: both;
+    font-weight: 400;
+    padding-top: 5px;
+    padding-bottom: 0px;
+    padding-left: 7px;
     padding-right: 10px;
     text-align: inherit;
     white-space: nowrap;

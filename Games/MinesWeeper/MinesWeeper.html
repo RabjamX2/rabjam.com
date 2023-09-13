@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MinesWeeper</title>
+        <meta name="description" content="MinesWeeper with a twist?" />
+        <link rel="icon" type="image/icon" href="Resources/favicon.ico" />
+        <link rel="stylesheet" href="/assets/css/styles.css" />
+        <style>
+            .display {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .number-boxes {
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: left; /* Center horizontally within the parent */
+                font-size: 1.8em;
+                margin-left: 1vw;
+            }
+            .number-display {
+                margin-top: 10px; /* Add spacing between the input and display boxes */
+            }
+
+            /* Styling for each result item (name and value) */
+            .result-item {
+                display: flex;
+                justify-content: left;
+                align-items: center;
+                margin-top: 0.5em;
+            }
+
+            /* Styling for the result names */
+            .result-name {
+                flex: 1;
+                max-width: 8em;
+                font-weight: bold;
+                margin-right: 10px; /* Adjust the spacing between name and value */
+                /* background-color: #fbff00; */
+            }
+
+            /* Styling for the result values */
+            .result-value {
+                flex: 1;
+                /* background-color: #000000; */
+            }
+
+            .board {
+                display: grid;
+                user-select: none; /* Standard syntax */
+                -webkit-user-select: none; /* Safari */
+                -ms-user-select: none; /* IE 10 and IE 11 */
+            }
+
+            .cell {
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                border: 1px solid #ccc;
+                width: 50px;
+                height: 50px;
+                text-align: center;
+                line-height: 50px;
+                font-weight: bold;
+            }
+
+            .hidden {
+                box-shadow: inset 0.2em 0.2em 0.2em 0 rgba(255, 255, 255, 0.5),
+                    inset -0.2em -0.2em 0.2em 0 rgba(0, 0, 0, 0.5);
+                background-color: rgb(184, 184, 184);
+                /* border: 4px solid #000000; */
+            }
+
+            .hidden:hover {
+                -webkit-filter: brightness(50%);
+                filter: brightness(50%);
+            }
+
+            .mine {
+                background-image: url("Resources/mine.png");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                position: relative;
+            }
+
+            .flagged {
+                background-image: url("Resources/flag.png");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: 70%;
+                position: relative;
+            }
+
+            .mistake {
+                background-color: rgba(199, 0, 0, 0.507);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <header id="headerPlaceholder"></header>
+
+        <!-- Main Content -->
+        <main>
+            <section class="hero">
+                <h1>MinesWeeper</h1>
+            </section>
+            <section class="display">
+                <div id="game-container">
+                    <div style="margin-top: 40px; margin-bottom: 10px; text-align: center">
+                        <button id="startGame">Start</button>
+                    </div>
+                    <div id="board" class="board" ondrag="return false;" ondragstart="return false;"></div>
+                    <div style="display: flex; align-items: center"></div>
+                </div>
+
+                <!-- Number Input and Display Boxes (stacked) -->
+                <div class="number-boxes">
+                    <!-- Number Input Box -->
+                    <div class="result-item">
+                        <span class="result-name">Board Height:</span>
+                        <div class="result-value">
+                            <input class="result-input" id="boardHeightInput" inputmode="numeric" pattern="\d*" />
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-name">Board Width:</span>
+                        <div class="result-value">
+                            <input class="result-input" id="boardWidthInput" inputmode="numeric" pattern="\d*" />
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-name">Number Of Mines:</span>
+                        <div class="result-value">
+                            <input class="result-input" id="numberOfMinesInput" inputmode="numeric" pattern="\d*" />
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-name">First Click Mode:</span>
+                        <div class="result-value">
+                            <select name="First Click Mode" id="firstClickModeInput"></select>
+                        </div>
+                    </div>
+
+                    <!-- Number Display Boxes -->
+                    <div class="number-display">
+                        <div class="result-item">
+                            <span class="result-name">Board Height:</span>
+                            <span class="result-value" id="boardHeight"></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-name">Board Width:</span>
+                            <span class="result-value" id="boardWidth"></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-name">Number Of Mines:</span>
+                            <span class="result-value" id="numberOfMines"></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-name">First Click Mode:</span>
+                            <span class="result-value" id="firstClickMode"></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-name"></span>
+                            <span class="result-value" id="ratio-multiplied"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- End Scripts -->
+        <script src="/assets/js/injector.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>
