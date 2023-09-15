@@ -25,50 +25,43 @@ const boardWidthValue = document.getElementById(`boardWidth`);
 const numberOfMinesValue = document.getElementById(`numberOfMines`);
 const firstClickModeValue = document.getElementById(`firstClickMode`);
 
-function updateElements(boardHeight, boardWidth, numberOfMines, firstClickMode) {
-    boardHeightValue.value = boardHeight;
-    boardWidthValue.value = boardWidth;
-    numberOfMinesValue.value = numberOfMines;
-    firstClickModeValue.value = firstClickMode;
+function updateElements(Game) {
+    boardHeightValue.innerHTML = Game.boardHeight;
+    boardWidthValue.innerHTML = Game.boardWidth;
+    numberOfMinesValue.innerHTML = Game.numberOfMines;
+    firstClickModeValue.innerHTML = Game.firstClickMode;
 }
 
-let board = [];
-let cleanMatrix = [];
-let mines = [];
-let flagsAsID = [];
-let revealedCellCount = 0;
-let isGameOver = false;
-
-function coordToID(coord, boardWidth) {
-    return coord[0] * boardWidth + coord[1];
+function coordToID(coord, Game) {
+    return coord[0] * Game.boardWidth + coord[1];
 }
 
-function IDToCoord(ID, boardWidth) {
-    // only useful if cleanArray is used instead of cleanMatrix
-    const x = Math.floor(ID / boardWidth);
-    const y = ID - x * boardWidth;
+function IDToCoord(ID, Game) {
+    const x = Math.floor(ID / Game.boardWidth);
+    const y = ID - x * Game.boardWidth;
     return [x, y];
 }
 
-function initializeBoard(boardHeight, boardWidth, numberOfMines, firstClickMode) {
-    if (boardHeight > 1 && boardWidth > 1 && numberOfMines <= boardHeight * boardWidth - 2 && numberOfMines > 1) {
-        updateElements(boardHeight, boardWidth, numberOfMines, firstClickMode);
-        let isFirstClick = true;
-        isGameOver = false;
-        revealedCellCount = 0;
-        flagsAsID = [];
+function initializeBoard(Game) {
+    if (
+        Game.boardHeight > 1 &&
+        Game.boardWidth > 1 &&
+        Game.numberOfMines <= Game.boardHeight * Game.boardWidth - 2 &&
+        Game.numberOfMines > 1
+    ) {
+        updateElements(Game);
 
-        cleanMatrix = Array.from({ length: boardHeight * boardWidth }, (x, i) => [
-            Math.floor(i / boardWidth),
-            i - Math.floor(i / boardWidth) * boardWidth,
+        Game.cleanMatrix = Array.from({ length: Game.boardHeight * Game.boardWidth }, (x, i) => [
+            Math.floor(i / Game.boardWidth),
+            i - Math.floor(i / Game.boardWidth) * Game.boardWidth,
         ]);
 
-        document.getElementById("board").style.gridTemplateColumns = `repeat(${boardWidth}, 0fr)`;
-        for (let i = 0; i < boardHeight; i++) {
-            board[i] = [];
-            for (let j = 0; j < boardWidth; j++) {
-                let theID = i * boardWidth + j; // i = Math.floor(theID / boardWidth)    ,  j = theID - Math.floor(theID / boardWidth) * boardWidth
-                board[i][j] = {
+        document.getElementById("board").style.gridTemplateColumns = `repeat(${Game.boardWidth}, 0fr)`;
+        for (let i = 0; i < Game.boardHeight; i++) {
+            Game.board[i] = [];
+            for (let j = 0; j < Game.boardWidth; j++) {
+                let theID = i * Game.boardWidth + j; // i = Math.floor(theID / Game.boardWidth)    ,  j = theID - Math.floor(theID / Game.boardWidth) * Game.boardWidth
+                Game.board[i][j] = {
                     mine: false,
                     revealed: false,
                     flagged: false,
@@ -83,27 +76,27 @@ function initializeBoard(boardHeight, boardWidth, numberOfMines, firstClickMode)
         const boardContainer = document.querySelector(".board");
         boardContainer.innerHTML = "";
 
-        for (let x = 0; x < boardHeight; x++) {
-            for (let y = 0; y < boardWidth; y++) {
+        for (let x = 0; x < Game.boardHeight; x++) {
+            for (let y = 0; y < Game.boardWidth; y++) {
                 const cell = document.createElement("div");
                 cell.id = `${x}_${y}`;
                 cell.classList.add("cell", "hidden");
 
                 cell.addEventListener("click", () => {
-                    if (isFirstClick) {
-                        placeMines([x, y], firstClickMode, boardWidth);
-                        countAdjacentMinesForAllCells(boardHeight, boardWidth);
-                        isFirstClick = false;
-                        revealCell(x, y, boardHeight, boardWidth);
-                    } else if (!board[x][y].revealed && !board[x][y].flagged) {
-                        revealCell(x, y, boardHeight, boardWidth);
+                    if (Game.isFirstClick) {
+                        placeMines([x, y], Game);
+                        countAdjacentMinesForAllCells(Game);
+                        Game.isFirstClick = false;
+                        revealCell(x, y, Game);
+                    } else if (!Game.board[x][y].revealed && !Game.board[x][y].flagged) {
+                        revealCell(x, y, Game);
                     }
                 });
 
                 cell.addEventListener("contextmenu", (e) => {
                     e.preventDefault();
-                    if (!isFirstClick && !board[x][y].revealed) {
-                        flagCell(x, y);
+                    if (!Game.isFirstClick && !Game.board[x][y].revealed) {
+                        flagCell(x, y, Game);
                     }
                 });
 
@@ -111,69 +104,78 @@ function initializeBoard(boardHeight, boardWidth, numberOfMines, firstClickMode)
             }
         }
     } else {
-        console.error("Conditions are wrong");
+        console.error(
+            `Conditions are wrong ${Game.boardHeight} ${Game.boardWidth} ${Game.numberOfMines} ${Game.firstClickMode}`
+        );
     }
 }
 
-function placeMines(firstClickCoord, firstClickMode, boardWidth) {
-    mines = [];
-    if (firstClickMode === "standard") {
-        cleanMatrix.splice(coordToID(firstClickCoord, boardWidth), 1);
+function placeMines(clickCoord, Game) {
+    Game.mines = [];
+    if (Game.firstClickMode === "standard") {
+        Game.cleanMatrix.splice(coordToID(clickCoord, Game), 1);
     }
     /*
     console.log(
-        cleanMatrix.findIndex((pair) => {
+        Game.cleanMatrix.findIndex((pair) => {
             return pair[0] === pairToRemove[0] && pair[1] === pairToRemove[1];
         })
     );
     */
-    for (let minesPlaced = 0; minesPlaced < numberOfMines; minesPlaced++) {
-        const randIndex = Math.floor(Math.random() * cleanMatrix.length);
-        mines = mines.concat(cleanMatrix.splice(randIndex, 1));
+    for (let minesPlaced = 0; minesPlaced < Game.numberOfMines; minesPlaced++) {
+        const randIndex = Math.floor(Math.random() * Game.cleanMatrix.length);
+        Game.mines = Game.mines.concat(Game.cleanMatrix.splice(randIndex, 1));
     }
 
-    for (let mineCoord of mines) {
-        board[mineCoord[0]][mineCoord[1]].mine = true;
+    for (let mineCoord of Game.mines) {
+        Game.board[mineCoord[0]][mineCoord[1]].mine = true;
     }
 }
 
-function countAdjacentMines(row, col, boardHeight, boardWidth) {
+function countAdjacentMines(row, col, Game) {
     for (let i = 0; i < neighbors.length; i++) {
         const [dx, dy] = neighbors[i];
         const newRow = row + dx;
         const newCol = col + dy;
 
-        if (newRow >= 0 && newRow < boardHeight && newCol >= 0 && newCol < boardWidth && board[newRow][newCol].mine) {
-            board[row][col].count++;
+        if (
+            newRow >= 0 &&
+            newRow < Game.boardHeight &&
+            newCol >= 0 &&
+            newCol < Game.boardWidth &&
+            Game.board[newRow][newCol].mine
+        ) {
+            Game.board[row][col].count++;
         }
     }
 }
 
-function countAdjacentMinesForAllCells(boardHeight, boardWidth) {
-    for (let i = 0; i < boardHeight; i++) {
-        for (let j = 0; j < boardWidth; j++) {
-            if (!board[i][j].mine) {
-                countAdjacentMines(i, j, boardHeight, boardWidth);
+function countAdjacentMinesForAllCells(Game) {
+    for (let i = 0; i < Game.boardHeight; i++) {
+        for (let j = 0; j < Game.boardWidth; j++) {
+            if (!Game.board[i][j].mine) {
+                countAdjacentMines(i, j, Game);
             }
         }
     }
 }
 
-function revealCell(row, col, boardHeight, boardWidth) {
-    board[row][col].revealed = true;
+function revealCell(row, col, Game) {
+    Game.board[row][col].revealed = true;
     const cellElement = document.getElementById(`${row}_${col}`);
     cellElement.classList.remove("hidden");
-    if (board[row][col].mine) {
+    if (Game.board[row][col].mine) {
         cellElement.classList.add("mistake");
-        didYouWin(false);
+        console.log("somehow Lost", row, col, Game);
+        didYouWin(false, Game);
         return;
     } else {
-        if (!isGameOver) {
-            revealedCellCount += 1;
+        if (!Game.isGameOver) {
+            Game.revealedCellCount += 1;
         }
-        cellElement.innerText = board[row][col].count === 0 ? " " : board[row][col].count;
+        cellElement.innerText = Game.board[row][col].count === 0 ? " " : Game.board[row][col].count;
 
-        if (board[row][col].count === 0) {
+        if (Game.board[row][col].count === 0) {
             for (let i = 0; i < neighbors.length; i++) {
                 const [dx, dy] = neighbors[i];
                 const newRow = row + dx;
@@ -181,82 +183,103 @@ function revealCell(row, col, boardHeight, boardWidth) {
 
                 if (
                     newRow >= 0 &&
-                    newRow < boardHeight &&
+                    newRow < Game.boardHeight &&
                     newCol >= 0 &&
-                    newCol < boardWidth &&
-                    !board[newRow][newCol].revealed
+                    newCol < Game.boardWidth &&
+                    !Game.board[newRow][newCol].revealed
                 ) {
-                    revealCell(newRow, newCol, boardHeight, boardWidth);
+                    revealCell(newRow, newCol, Game);
                 }
             }
         }
     }
 
-    if (revealedCellCount >= boardHeight * boardWidth - numberOfMines) {
-        didYouWin(true);
-        revealedCellCount = 0;
+    if (Game.revealedCellCount >= Game.boardHeight * Game.boardWidth - Game.numberOfMines) {
+        didYouWin(true, Game);
+        Game.revealedCellCount = 0;
     }
 }
 
-function flagCell(row, col) {
+function flagCell(row, col, Game) {
     const cellElement = document.getElementById(`${row}_${col}`);
 
-    if (board[row][col].flagged) {
-        board[row][col].flagged = false;
-        if (board[row][col].mine) {
-            board[row][col].correctFlag = false;
+    if (Game.board[row][col].flagged) {
+        Game.board[row][col].flagged = false;
+        if (Game.board[row][col].mine) {
+            Game.board[row][col].correctFlag = false;
         }
-        flagsAsID.splice(flagsAsID.indexOf(coordToID([row, col])), 1);
+        Game.flagsAsID.splice(Game.flagsAsID.indexOf(coordToID([row, col], Game)), 1);
         cellElement.classList.remove("flagged");
     } else {
-        board[row][col].flagged = true;
-        if (board[row][col].mine) {
-            board[row][col].correctFlag = true;
+        Game.board[row][col].flagged = true;
+        if (Game.board[row][col].mine) {
+            Game.board[row][col].correctFlag = true;
         }
-        flagsAsID.push(coordToID([row, col]));
+        Game.flagsAsID.push(coordToID([row, col], Game));
         cellElement.classList.add("flagged");
     }
 }
 
-function didYouWin(win) {
-    if (!isGameOver) {
+function didYouWin(win, Game) {
+    if (!Game.isGameOver) {
         if (win) {
-            for (let mineCoord of mines) {
-                if (!board[mineCoord[0]][mineCoord[1]].flagged) {
+            for (let mineCoord of Game.mines) {
+                if (!Game.board[mineCoord[0]][mineCoord[1]].flagged) {
                     const revealedMine = document.getElementById(`${mineCoord[0]}_${mineCoord[1]}`);
-                    flagCell(mineCoord[0], mineCoord[1]);
+                    flagCell(mineCoord[0], mineCoord[1], Game);
                 }
             }
             alert("WIN!");
         } else {
-            for (let mineCoord of mines) {
-                if (!board[mineCoord[0]][mineCoord[1]].flagged) {
+            for (let mineCoord of Game.mines) {
+                if (!Game.board[mineCoord[0]][mineCoord[1]].flagged) {
                     const revealedMine = document.getElementById(`${mineCoord[0]}_${mineCoord[1]}`);
                     revealedMine.classList.remove("hidden");
                     revealedMine.classList.add("mine");
                 }
             }
-            for (let flag of flagsAsID) {
-                const coordOfFlag = IDToCoord(flag, boardWidth);
-                if (!board[coordOfFlag[0]][coordOfFlag[1]].correctFlag) {
+            for (let flag of Game.flagsAsID) {
+                const coordOfFlag = IDToCoord(flag, Game);
+                if (!Game.board[coordOfFlag[0]][coordOfFlag[1]].correctFlag) {
                     const falseFlag = document.getElementById(`${coordOfFlag[0]}_${coordOfFlag[1]}`);
                     falseFlag.classList.add("mistake");
                 }
             }
             alert("Game Over!");
         }
-        isGameOver = true;
+        Game.isGameOver = true;
     }
 }
 
 document.getElementById("startGame").addEventListener("click", function () {
-    initializeBoard(
-        boardHeightElement.value,
-        boardWidthElement.value,
-        numberOfMinesElement.value,
-        firstClickModeElement.value
-    );
+    const GameObject = {
+        boardHeight: boardHeightElement.value,
+        boardWidth: boardWidthElement.value,
+        numberOfMines: numberOfMinesElement.value,
+        firstClickMode: firstClickModeElement.value,
+        board: [],
+        cleanMatrix: [],
+        mines: [],
+        flagsAsID: [],
+        revealedCellCount: 0,
+        isFirstClick: true,
+        isGameOver: false,
+    };
+    initializeBoard(GameObject);
     console.log("Started Game");
 });
 
-initializeBoard(10, 10, 10, "standard");
+let FreshGame = {
+    boardHeight: 10,
+    boardWidth: 10,
+    numberOfMines: 10,
+    firstClickMode: "standard",
+    board: [],
+    cleanMatrix: [],
+    mines: [],
+    flagsAsID: [],
+    revealedCellCount: 0,
+    isFirstClick: true,
+    isGameOver: false,
+};
+initializeBoard(FreshGame);
