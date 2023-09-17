@@ -1,0 +1,56 @@
+// Import SVG files for each card
+export { ReactComponent as _2C } from "./bigFont/2C.svg";
+export { ReactComponent as _3C } from "./bigFont/3C.svg";
+export { ReactComponent as _4C } from "./bigFont/4C.svg";
+export { ReactComponent as _5C } from "./bigFont/5C.svg";
+export { ReactComponent as _6C } from "./bigFont/6C.svg";
+export { ReactComponent as _7C } from "./bigFont/7C.svg";
+export { ReactComponent as _8C } from "./bigFont/8C.svg";
+export { ReactComponent as _9C } from "./bigFont/9C.svg";
+export { ReactComponent as _TC } from "./bigFont/TC.svg";
+export { ReactComponent as _JC } from "./bigFont/JC.svg";
+export { ReactComponent as _QC } from "./bigFont/QC.svg";
+export { ReactComponent as _KC } from "./bigFont/KC.svg";
+export { ReactComponent as _AC } from "./bigFont/AC.svg";
+
+export { ReactComponent as _2D } from "./bigFont/2D.svg";
+export { ReactComponent as _3D } from "./bigFont/3D.svg";
+export { ReactComponent as _4D } from "./bigFont/4D.svg";
+export { ReactComponent as _5D } from "./bigFont/5D.svg";
+export { ReactComponent as _6D } from "./bigFont/6D.svg";
+export { ReactComponent as _7D } from "./bigFont/7D.svg";
+export { ReactComponent as _8D } from "./bigFont/8D.svg";
+export { ReactComponent as _9D } from "./bigFont/9D.svg";
+export { ReactComponent as _TD } from "./bigFont/TD.svg";
+export { ReactComponent as _JD } from "./bigFont/JD.svg";
+export { ReactComponent as _QD } from "./bigFont/QD.svg";
+export { ReactComponent as _KD } from "./bigFont/KD.svg";
+export { ReactComponent as _AD } from "./bigFont/AD.svg";
+
+export { ReactComponent as _2H } from "./bigFont/2H.svg";
+export { ReactComponent as _3H } from "./bigFont/3H.svg";
+export { ReactComponent as _4H } from "./bigFont/4H.svg";
+export { ReactComponent as _5H } from "./bigFont/5H.svg";
+export { ReactComponent as _6H } from "./bigFont/6H.svg";
+export { ReactComponent as _7H } from "./bigFont/7H.svg";
+export { ReactComponent as _8H } from "./bigFont/8H.svg";
+export { ReactComponent as _9H } from "./bigFont/9H.svg";
+export { ReactComponent as _TH } from "./bigFont/TH.svg";
+export { ReactComponent as _JH } from "./bigFont/JH.svg";
+export { ReactComponent as _QH } from "./bigFont/QH.svg";
+export { ReactComponent as _KH } from "./bigFont/KH.svg";
+export { ReactComponent as _AH } from "./bigFont/AH.svg";
+
+export { ReactComponent as _2S } from "./bigFont/2S.svg";
+export { ReactComponent as _3S } from "./bigFont/3S.svg";
+export { ReactComponent as _4S } from "./bigFont/4S.svg";
+export { ReactComponent as _5S } from "./bigFont/5S.svg";
+export { ReactComponent as _6S } from "./bigFont/6S.svg";
+export { ReactComponent as _7S } from "./bigFont/7S.svg";
+export { ReactComponent as _8S } from "./bigFont/8S.svg";
+export { ReactComponent as _9S } from "./bigFont/9S.svg";
+export { ReactComponent as _TS } from "./bigFont/TS.svg";
+export { ReactComponent as _JS } from "./bigFont/JS.svg";
+export { ReactComponent as _QS } from "./bigFont/QS.svg";
+export { ReactComponent as _KS } from "./bigFont/KS.svg";
+export { ReactComponent as _AS } from "./bigFont/AS.svg";

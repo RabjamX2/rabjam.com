@@ -1,0 +1,52 @@
+.game-ui {
+    height: 100vh;
+    background: rgb(0, 53, 69);
+    display: flex;
+}
+.game-container {
+    height: 100%;
+    width: 100%; /* TODO: Change this when adding sidebars and such */
+    display: flex;
+    flex-direction: column;
+    -moz-box-pack: center;
+    justify-content: center;
+    -moz-box-align: center;
+    align-items: center;
+    position: fixed;
+    /* overflow: hidden; */
+    scrollbar-width: none;
+}
+
+.game-table-container {
+    height: 50vh;
+    width: 75vw;
+    margin-top: -10vh;
+    position: relative;
+    text-align: center;
+    display: block;
+    z-index: -2;
+    transform: translateY(30px);
+}
+
+.table-container {
+    height: 100px;
+}
+
+.table {
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%);
+    text-align: center;
+    z-index: -1;
+    background: rgb(0, 69, 74);
+    border: 10px solid rgb(82, 82, 82);
+    border-radius: 200px;
+    display: flex;
+    -moz-box-align: center;
+    align-items: center;
+    -moz-box-pack: center;
+    justify-content: center;
+}

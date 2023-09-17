@@ -1,0 +1,34 @@
+.card-container {
+    width: 200px; /* Adjust to match your card dimensions */
+    height: 300px; /* Adjust to match your card dimensions */
+    perspective: 1000px;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    cursor: pointer;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.card-front {
+    background-color: blue; /* Front side background color */
+}
+
+.card-back {
+    background-color: red; /* Back side background color */
+    transform: rotateY(180deg);
+}

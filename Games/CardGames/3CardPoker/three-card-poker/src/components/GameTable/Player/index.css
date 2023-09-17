@@ -1,0 +1,7 @@
+.player {
+    position: absolute;
+    display: block;
+    width: 145px;
+    height: 160px;
+    transform: translate(-50%, -50%);
+}

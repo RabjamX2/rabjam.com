@@ -1,0 +1,56 @@
+// Import SVG files for each card
+export { ReactComponent as _2C } from "./2C.svg";
+export { ReactComponent as _3C } from "./3C.svg";
+export { ReactComponent as _4C } from "./4C.svg";
+export { ReactComponent as _5C } from "./5C.svg";
+export { ReactComponent as _6C } from "./6C.svg";
+export { ReactComponent as _7C } from "./7C.svg";
+export { ReactComponent as _8C } from "./8C.svg";
+export { ReactComponent as _9C } from "./9C.svg";
+export { ReactComponent as _TC } from "./TC.svg";
+export { ReactComponent as _JC } from "./JC.svg";
+export { ReactComponent as _QC } from "./QC.svg";
+export { ReactComponent as _KC } from "./KC.svg";
+export { ReactComponent as _AC } from "./AC.svg";
+
+export { ReactComponent as _2D } from "./2D.svg";
+export { ReactComponent as _3D } from "./3D.svg";
+export { ReactComponent as _4D } from "./4D.svg";
+export { ReactComponent as _5D } from "./5D.svg";
+export { ReactComponent as _6D } from "./6D.svg";
+export { ReactComponent as _7D } from "./7D.svg";
+export { ReactComponent as _8D } from "./8D.svg";
+export { ReactComponent as _9D } from "./9D.svg";
+export { ReactComponent as _TD } from "./TD.svg";
+export { ReactComponent as _JD } from "./JD.svg";
+export { ReactComponent as _QD } from "./QD.svg";
+export { ReactComponent as _KD } from "./KD.svg";
+export { ReactComponent as _AD } from "./AD.svg";
+
+export { ReactComponent as _2H } from "./2H.svg";
+export { ReactComponent as _3H } from "./3H.svg";
+export { ReactComponent as _4H } from "./4H.svg";
+export { ReactComponent as _5H } from "./5H.svg";
+export { ReactComponent as _6H } from "./6H.svg";
+export { ReactComponent as _7H } from "./7H.svg";
+export { ReactComponent as _8H } from "./8H.svg";
+export { ReactComponent as _9H } from "./9H.svg";
+export { ReactComponent as _TH } from "./TH.svg";
+export { ReactComponent as _JH } from "./JH.svg";
+export { ReactComponent as _QH } from "./QH.svg";
+export { ReactComponent as _KH } from "./KH.svg";
+export { ReactComponent as _AH } from "./AH.svg";
+
+export { ReactComponent as _2S } from "./2S.svg";
+export { ReactComponent as _3S } from "./3S.svg";
+export { ReactComponent as _4S } from "./4S.svg";
+export { ReactComponent as _5S } from "./5S.svg";
+export { ReactComponent as _6S } from "./6S.svg";
+export { ReactComponent as _7S } from "./7S.svg";
+export { ReactComponent as _8S } from "./8S.svg";
+export { ReactComponent as _9S } from "./9S.svg";
+export { ReactComponent as _TS } from "./TS.svg";
+export { ReactComponent as _JS } from "./JS.svg";
+export { ReactComponent as _QS } from "./QS.svg";
+export { ReactComponent as _KS } from "./KS.svg";
+export { ReactComponent as _AS } from "./AS.svg";
