@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="bo">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tibetan Grammar-Enforced Keyboard & Structural Parser</title>
+  <meta name="description"
+    content="An interactive web keyboard for typing Tibetan script where traditional grammar rules are enforced in real-time.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Application Header -->
+  <header class="app-header">
+    <div class="brand-title">
+      <div class="brand-logo">༄༅།</div>
+      <div class="brand-text">
+        <h1>Tibetan Keyboard</h1>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Navigation Tabs -->
+      <nav class="nav-tab-group">
+        <a href="index.html" class="nav-tab-btn active" title="Open Real-time Grammar Keyboard">⌨️ Keyboard &
+          Inspector</a>
+        <a href="checker.html" class="nav-tab-btn" title="Open Document Grammar Checker">📄 Document Rule Checker</a>
+      </nav>
+
+      <div class="mode-select-wrapper">
+        <label for="keyboard-preset-select" class="mode-select-label">🎨 Preset:</label>
+        <select id="keyboard-preset-select" class="mode-select-dropdown" title="Select Keyboard Layout Preset">
+          <option value="ewts">Wylie / EWTS</option>
+          <option value="mac-qwerty">Tibetan QWERTY</option>
+          <option value="sambhota">Sambhota (Standard Tibetan)</option>
+          <option value="alphabetical">Alphabetical</option>
+        </select>
+      </div>
+      <div class="mode-select-wrapper">
+        <label for="input-mode-select" class="mode-select-label">⌨️ Mode:</label>
+        <select id="input-mode-select" class="mode-select-dropdown" title="Switch Hardware Keyboard Stacking Behavior">
+          <option value="explicit">Shift-to-Subjoin</option>
+          <option value="ewts">Auto Wylie Stack</option>
+        </select>
+      </div>
+      <button id="btn-sound-toggle" class="btn-icon" title="Toggle Keyboard Audio">
+        <span id="sound-icon">🔊</span> Audio: <span id="sound-status">ON</span>
+      </button>
+      <button id="btn-copy" class="btn-icon" title="Copy Text to Clipboard">
+        📋 Copy
+      </button>
+      <button id="btn-clear" class="btn-icon" title="Clear Textarea">
+        🗑️ Clear
+      </button>
+    </div>
+  </header>
+
+  <main class="main-container">
+
+    <!-- Text Editing & Live Wylie Card -->
+    <section class="editor-card">
+      <div class="editor-toolbar">
+        <span class="editor-label">Text Editor</span>
+        <div class="wylie-preview" id="wylie-output" title="Live Wylie Transliteration">
+          Wylie: <span id="wylie-text">...</span>
+        </div>
+      </div>
+
+      <div id="text-display" class="text-display-box" tabindex="0">
+        <span id="committed-text"></span><span id="active-syllable-wrapper" class="active-syllable-highlight"><span
+            id="active-syllable-text"></span></span>
+      </div>
+
+      <!-- Quick Sample Sentences -->
+      <div class="samples-bar">
+        <span style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">Samples:</span>
+        <button class="sample-chip" data-sample="བཀྲ་ཤིས་བདེ་ལེགས།">བཀྲ་ཤིས་བདེ་ལེགས།</button>
+        <button class="sample-chip" data-sample="བྱང་ཆུབ་སེམས་དཔའ།">བྱང་ཆུབ་སེམས་དཔའ།</button>
+        <button class="sample-chip" data-sample="བསྒྲུབས་">བསྒྲུབས་</button>
+        <button class="sample-chip" data-sample="མདོའི་">མདོའི་</button>
+        <button class="sample-chip" data-sample="དགེ་འདུན།">དགེ་འདུན།</button>
+      </div>
+    </section>
+
+    <!-- Structural Component Inspector Panel -->
+    <section class="inspector-card">
+      <div class="inspector-header">
+        <div class="inspector-title">
+          <span>🔍</span> Active Syllable Component Breakdown
+        </div>
+        <div id="grammar-status" class="grammar-status-badge">
+          Grammar Valid
+        </div>
+      </div>
+
+      <div class="components-grid">
+        <div class="slot-card" id="slot-prefix">
+          <div class="slot-label">Prefix (སྔོན་འཇུག་)</div>
+          <div class="slot-tibetan" id="val-prefix">-</div>
+        </div>
+        <div class="slot-card" id="slot-superscript">
+          <div class="slot-label">Superscript (མགོ་ཡིག་)</div>
+          <div class="slot-tibetan" id="val-superscript">-</div>
+        </div>
+        <div class="slot-card" id="slot-root">
+          <div class="slot-label">Root (མིང་གཞི་)</div>
+          <div class="slot-tibetan" id="val-root">-</div>
+        </div>
+        <div class="slot-card" id="slot-subscript">
+          <div class="slot-label">Subscript (འདོགས་ཡིག་)</div>
+          <div class="slot-tibetan" id="val-subscript">-</div>
+        </div>
+        <div class="slot-card" id="slot-vowel">
+          <div class="slot-label">Vowel (དབྱངས་)</div>
+          <div class="slot-tibetan" id="val-vowel">-</div>
+        </div>
+        <div class="slot-card" id="slot-suffix">
+          <div class="slot-label">Suffix (རྗེས་འཇུག་)</div>
+          <div class="slot-tibetan" id="val-suffix">-</div>
+        </div>
+        <div class="slot-card" id="slot-2nd-suffix">
+          <div class="slot-label">2nd Suffix (ཡང་འཇུག་)</div>
+          <div class="slot-tibetan" id="val-secondSuffix">-</div>
+        </div>
+        <div class="slot-card" id="slot-particle">
+          <div class="slot-label">Particle Vowel (འི་/འོ་)</div>
+          <div class="slot-tibetan" id="val-particleVowel">-</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- On-Screen Tibetan Keyboard Card -->
+    <section class="keyboard-card">
+      <div class="keyboard-nav">
+        <div class="tab-group">
+          <button class="tab-btn active" data-layout="consonants">Consonants (གསལ་བྱེད་)</button>
+          <button class="tab-btn" data-layout="subscripts-vowels">Subscripts & Vowels (འདོགས་ཡིག་/དབྱངས་)</button>
+          <button class="tab-btn" data-layout="punctuation">Punctuation & Numbers (ཡིག་རྟགས་)</button>
+        </div>
+
+        <div class="view-switch-group">
+          <button class="view-btn active" id="btn-view-qwerty" data-view="qwerty"
+            title="QWERTY Physical Keyboard Layout with English Letters">
+            ⌨️ QWERTY Form
+          </button>
+          <button class="view-btn" id="btn-view-alphabetical" data-view="alphabetical"
+            title="Traditional 30-Letter Grid View">
+            🔤 Alphabetical Grid
+          </button>
+        </div>
+      </div>
+
+      <!-- Dynamic Keyboard Container -->
+      <div id="keyboard-container" class="keyboard-layout"></div>
+    </section>
+
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+{
+    "name": "rabjam-keyboard",
+    "private": true,
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "serve . -p 8080"
+    },
+    "devDependencies": {
+        "serve": "^14.2.4"
+    }
+}

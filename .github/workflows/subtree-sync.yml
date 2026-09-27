@@ -8,6 +8,7 @@ on:
       - 'client/src/routes/games/connect4/**'
       - 'client/src/routes/games/minesweeper/**'
       - 'client/static/games/guesser-games/**'
+      - 'client/static/keyboard/**'
       - '.github/workflows/subtree-sync.yml'
   workflow_dispatch:
 
@@ -57,3 +58,12 @@ jobs:
           COMMIT_ID=$(git subtree split --prefix=client/static/games/guesser-games main)
           echo "Pushing PokeGuesser commit $COMMIT_ID to RabjamX2/PokeGuesser..."
           git push "https://x-access-token:${TOKEN}@github.com/RabjamX2/PokeGuesser.git" "${COMMIT_ID}:refs/heads/javascript" --force
+
+      - name: Sync Rabjam Keyboard Subtree
+        run: |
+          TOKEN="${{ secrets.SYNC_PAT }}"
+          if [ -z "$TOKEN" ]; then exit 0; fi
+          echo "Splitting Rabjam Keyboard..."
+          COMMIT_ID=$(git subtree split --prefix=client/static/keyboard main)
+          echo "Pushing Rabjam Keyboard commit $COMMIT_ID to RabjamX2/rabjam-keyboard..."
+          git push "https://x-access-token:${TOKEN}@github.com/RabjamX2/rabjam-keyboard.git" "${COMMIT_ID}:refs/heads/main" --force

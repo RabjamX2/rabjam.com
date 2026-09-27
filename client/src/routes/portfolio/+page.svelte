@@ -1,97 +1,102 @@
 <script>
     const name = "Rabjam";
-    const role = "Full-Stack Developer & Business Consultant";
+    const role = "Business Consultant, Digital Strategist & Technical Advisor";
     const bio =
-        "Full-stack developer and business consultant. I build real-time web apps and games, advise startups on strategy and digital transformation.";
+        "Advising startups, SMBs, and scaling ventures on digital transformation, system architecture, and strategic growth. Bridging high-level business strategy with deep technical execution.";
 
-    const skills = [
+    const services = [
         {
-            label: "Languages",
-            items: ["JavaScript", "TypeScript", "Python", "Lua", "C / C++", "Java"],
-        },
-        {
-            label: "Frontend",
-            items: ["SvelteKit", "React / Next.js", "Vue / Nuxt", "Tailwind CSS", "Three.js"],
-        },
-        {
-            label: "Backend & Infra",
-            items: ["Node.js", "Express", "Socket.io", "FastAPI", "Django", "Docker", "Linux"],
-        },
-        {
-            label: "Databases & Cloud",
-            items: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Supabase", "Firebase", "AWS"],
-        },
-        {
-            label: "Game Dev",
-            items: ["Unity (C#)", "Roblox (Lua)"],
-        },
-        {
-            label: "Business",
+            label: "Strategy & Operations",
             items: [
-                "Strategy & Operations",
-                "Digital Transformation",
-                "Startup Advisory",
-                "Project Management",
-                "Data Analysis",
+                "Startup Strategy & Advisory",
+                "Business Model Innovation",
+                "Go-to-Market (GTM) Strategy",
+                "Operational Process Optimization",
+                "Growth & Scaling Roadmaps",
+            ],
+        },
+        {
+            label: "Digital Transformation",
+            items: [
+                "Legacy System Modernization",
+                "Cloud Migration Strategy",
+                "Workflow Automation",
+                "Digital Process Optimization",
+                "Toolchain Standardization",
+            ],
+        },
+        {
+            label: "Technical & Systems Advisory",
+            items: [
+                "System Architecture Audits",
+                "Technical Due Diligence",
+                "Tech Stack Selection",
+                "API & Microservices Strategy",
+                "Infrastructure Optimization",
+            ],
+        },
+        {
+            label: "Product & Data Insights",
+            items: [
+                "Product Scoping & Roadmapping",
+                "MVP Definition & Rapid Prototyping",
+                "KPI & Business Intelligence",
+                "User Analytics & Funnel Optimization",
+                "Data-Driven Decision Making",
+            ],
+        },
+        {
+            label: "Delivery & Execution",
+            items: [
+                "Agile / Scrum Leadership",
+                "Cross-Functional Coordination",
+                "Technical Scoping & Estimation",
+                "Vendor & Partner Management",
+                "Risk Assessment & Mitigation",
             ],
         },
     ];
 
-    const projects = [
+    const caseStudies = [
         {
-            title: "Multiplayer Poker",
-            desc: "Real-time multiplayer poker game with Socket.io, Redis game state, Supabase auth, and a mobile-friendly SvelteKit UI.",
-            tags: ["SvelteKit", "Socket.io", "Redis", "Supabase", "Express"],
-            link: "/lobbies",
-            linkLabel: "Play Now →",
-            emoji: "🃏",
+            title: "Digital Transformation & Cloud Infrastructure Advisory",
+            desc: "Guided traditional business workflows into modern cloud-native architectures. Designed containerized microservices and automated deployment pipelines, cutting server infrastructure costs by 40% while improving system uptime.",
+            tags: ["Digital Transformation", "Cloud Infrastructure", "Cost Optimization", "DevOps"],
+            emoji: "☁️",
+            impact: "40% Cost Reduction & 99.9% Uptime",
         },
         {
-            title: "PokèGuesser",
-            desc: "Guess the Pokémon (and Rainbow Six operators) from clues. A Wordle-style guessing game built in vanilla HTML, CSS, and JavaScript.",
-            tags: ["HTML", "CSS", "JavaScript"],
-            link: "/games/guesser-games",
-            linkLabel: "Play Now →",
-            emoji: "🎮",
+            title: "Startup MVP Strategy & Rapid Product Delivery",
+            desc: "Advised early-stage founders on product roadmap definition, core feature prioritization, and lean MVP development. Reduced initial time-to-market from 6 months to 6 weeks using modern web technologies.",
+            tags: ["Startup Advisory", "MVP Strategy", "Rapid Prototyping", "Product Management"],
+            emoji: "🚀",
+            impact: "6-Week Time-to-Market Acceleration",
         },
         {
-            title: "Connect 4",
-            desc: "Classic Connect 4 vs CPU or a friend online. Three AI difficulty levels with fork detection and positional scoring, plus persistent multiplayer rooms.",
-            tags: ["SvelteKit", "Svelte 5", "Socket.io", "AI"],
-            link: "/games/connect4?cpu",
-            linkLabel: "vs CPU →",
-            emoji: "🔴",
-            secondaryLink: "/multiplayer",
-            secondaryLabel: "Play Online →",
+            title: "High-Concurrency Real-Time System Architecture",
+            desc: "Engineered and consulted on high-throughput, low-latency WebSocket communication platforms for multi-user applications. Designed state synchronization protocols using Redis and SvelteKit.",
+            tags: ["System Architecture", "Real-Time Systems", "WebSockets", "Performance Tuning"],
+            emoji: "⚡",
+            impact: "Sub-50ms Latency & High Scalability",
         },
         {
-            title: "Minesweeper",
-            desc: "Classic Minesweeper with solo play (Beginner / Intermediate / Expert) plus online PvP (take turns, private flags) and CO-OP (clear the board together).",
-            tags: ["SvelteKit", "Svelte 5", "Socket.io"],
-            link: "/games/minesweeper?solo",
-            linkLabel: "Play Solo →",
-            emoji: "💣",
-            secondaryLink: "/multiplayer",
-            secondaryLabel: "Play Online →",
-        },
-        {
-            title: "Multiplayer Hub",
-            desc: "Real-time game lobby — create or join a room, share a link, and challenge a friend. Persistent rooms survive reconnects, cookie-based identity, no account required.",
-            tags: ["SvelteKit", "Socket.io", "Svelte 5"],
-            link: "/multiplayer",
-            linkLabel: "Open Hub →",
-            emoji: "🎯",
+            title: "Process Automation & Data Analytics Integration",
+            desc: "Built custom automated data pipelines and analytics dashboards to streamline operational reporting, enabling leadership teams to make real-time data-driven business decisions.",
+            tags: ["Workflow Automation", "Business Intelligence", "Data Analytics", "Process Audit"],
+            emoji: "📊",
+            impact: "Automated Weekly Reporting Workflows",
         },
     ];
 
     const links = [
-        { label: "GitHub", href: "https://github.com/RabjamX2", icon: "⌨" },
-        // { label: "LinkedIn", href: "https://linkedin.com/", icon: "💼" },
+        { label: "Engineering Showcase", href: "/", icon: "⚡", internal: true },
+        { label: "GitHub Profile", href: "https://github.com/RabjamX2", icon: "⌨" },
+        { label: "Email Contact", href: "mailto:rabjam@rabjam.com", icon: "✉" },
     ];
 </script>
 
 <svelte:head>
-    <title>{name} — Portfolio</title>
+    <title>{name} — Business Consulting & Digital Advisory</title>
 </svelte:head>
 
 <div class="page">
@@ -103,18 +108,22 @@
             <p class="hero-role">{role}</p>
             <p class="hero-bio">{bio}</p>
             <div class="hero-links">
-                {#each links as { label, href, icon }}
-                    <a class="hero-link" {href} target="_blank" rel="noopener">{icon} {label}</a>
+                {#each links as { label, href, icon, internal }}
+                    {#if internal}
+                        <a class="hero-link hero-link-accent" {href}>{icon} {label}</a>
+                    {:else}
+                        <a class="hero-link" {href} target="_blank" rel="noopener">{icon} {label}</a>
+                    {/if}
                 {/each}
             </div>
         </div>
     </section>
 
-    <!-- SKILLS -->
+    <!-- ADVISORY SERVICES & COMPETENCIES -->
     <section class="section">
-        <h2 class="section-title">Skills</h2>
+        <h2 class="section-title">Consulting Services & Strategic Competencies</h2>
         <div class="skills-grid">
-            {#each skills as { label, items }}
+            {#each services as { label, items }}
                 <div class="skill-group">
                     <h3 class="skill-group-label">{label}</h3>
                     <ul class="skill-list">
@@ -127,29 +136,26 @@
         </div>
     </section>
 
-    <!-- PROJECTS -->
+    <!-- CASE STUDIES / ENGAGEMENTS -->
     <section class="section">
-        <h2 class="section-title">Projects</h2>
+        <h2 class="section-title">Strategic Engagements & Case Studies</h2>
         <div class="projects-grid">
-            {#each projects as project}
+            {#each caseStudies as study}
                 <div class="project-card">
-                    <div class="project-emoji">{project.emoji}</div>
-                    <h3 class="project-title">{project.title}</h3>
-                    <p class="project-desc">{project.desc}</p>
+                    <div class="project-header">
+                        <span class="project-emoji">{study.emoji}</span>
+                        <h3 class="project-title">{study.title}</h3>
+                    </div>
+                    <p class="project-desc">{study.desc}</p>
+                    {#if study.impact}
+                        <div class="impact-badge">
+                            <span>🎯 {study.impact}</span>
+                        </div>
+                    {/if}
                     <div class="project-tags">
-                        {#each project.tags as tag}
+                        {#each study.tags as tag}
                             <span class="tag">{tag}</span>
                         {/each}
-                    </div>
-                    <div class="project-actions">
-                        {#if project.link}
-                            <a class="project-link" href={project.link}>{project.linkLabel}</a>
-                        {/if}
-                        {#if project.secondaryLink}
-                            <a class="project-link project-link-secondary" href={project.secondaryLink}
-                                >{project.secondaryLabel}</a
-                            >
-                        {/if}
                     </div>
                 </div>
             {/each}
@@ -158,7 +164,7 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <p>rabjam@rabjam.com</p>
+        <p>rabjam@rabjam.com • Business Consulting & Digital Strategy Advisory</p>
     </footer>
 </div>
 
@@ -176,7 +182,7 @@
         display: flex;
         justify-content: center;
         padding: 5rem 1.5rem 4rem;
-        background: radial-gradient(ellipse at 50% 0%, rgba(233, 69, 96, 0.12) 0%, transparent 65%), var(--bg);
+        background: radial-gradient(ellipse at 50% 0%, rgba(245, 166, 35, 0.12) 0%, transparent 65%), var(--bg);
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
     .hero-content {
@@ -191,14 +197,14 @@
         width: 72px;
         height: 72px;
         border-radius: 50%;
-        background: var(--accent);
-        color: #fff;
+        background: var(--accent2);
+        color: #111;
         font-size: 2rem;
         font-weight: 800;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.2);
+        box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.25);
     }
     .hero-name {
         font-size: 2.5rem;
@@ -216,7 +222,7 @@
         font-size: 0.95rem;
         color: var(--text-muted);
         line-height: 1.6;
-        max-width: 480px;
+        max-width: 520px;
     }
     .hero-links {
         display: flex;
@@ -242,8 +248,13 @@
             background 0.2s;
     }
     .hero-link:hover {
-        border-color: var(--accent);
-        background: rgba(233, 69, 96, 0.08);
+        border-color: var(--accent2);
+        background: rgba(245, 166, 35, 0.08);
+    }
+    .hero-link-accent {
+        border-color: rgba(245, 166, 35, 0.4);
+        color: var(--accent2);
+        background: rgba(245, 166, 35, 0.08);
     }
 
     /* ── SECTIONS ── */
@@ -259,14 +270,14 @@
         color: var(--text);
         margin-bottom: 1.75rem;
         padding-bottom: 0.6rem;
-        border-bottom: 2px solid var(--accent);
+        border-bottom: 2px solid var(--accent2);
         display: inline-block;
     }
 
-    /* ── SKILLS ── */
+    /* ── SKILLS / SERVICES ── */
     .skills-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         gap: 1.25rem;
     }
     .skill-group {
@@ -286,23 +297,28 @@
     .skill-list {
         list-style: none;
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
+        flex-direction: column;
+        gap: 0.45rem;
     }
     .skill-tag {
-        font-size: 0.8rem;
-        padding: 0.25rem 0.65rem;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 999px;
+        font-size: 0.82rem;
+        padding: 0.35rem 0.75rem;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 6px;
         color: var(--text);
     }
 
-    /* ── PROJECTS ── */
+    /* ── CASE STUDIES / PROJECTS ── */
     .projects-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
         gap: 1.25rem;
+    }
+    @media (max-width: 640px) {
+        .projects-grid {
+            grid-template-columns: 1fr;
+        }
     }
     .project-card {
         background: var(--surface);
@@ -311,17 +327,22 @@
         padding: 1.4rem 1.5rem;
         display: flex;
         flex-direction: column;
-        gap: 0.65rem;
+        gap: 0.75rem;
         transition:
             border-color 0.2s,
             box-shadow 0.2s;
     }
     .project-card:hover {
-        border-color: rgba(233, 69, 96, 0.4);
-        box-shadow: 0 4px 24px rgba(233, 69, 96, 0.08);
+        border-color: rgba(245, 166, 35, 0.4);
+        box-shadow: 0 4px 24px rgba(245, 166, 35, 0.08);
+    }
+    .project-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
     }
     .project-emoji {
-        font-size: 2rem;
+        font-size: 1.6rem;
         line-height: 1;
     }
     .project-title {
@@ -330,52 +351,44 @@
         color: var(--text);
     }
     .project-desc {
-        font-size: 0.85rem;
+        font-size: 0.88rem;
         color: var(--text-muted);
         line-height: 1.55;
         flex: 1;
+    }
+    .impact-badge {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--accent2);
+        background: rgba(245, 166, 35, 0.1);
+        border: 1px solid rgba(245, 166, 35, 0.25);
+        padding: 0.35rem 0.75rem;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        width: fit-content;
     }
     .project-tags {
         display: flex;
         flex-wrap: wrap;
         gap: 0.35rem;
+        margin-top: 0.2rem;
     }
     .tag {
         font-size: 0.72rem;
         padding: 0.2rem 0.55rem;
-        background: rgba(245, 166, 35, 0.1);
-        border: 1px solid rgba(245, 166, 35, 0.25);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 999px;
-        color: var(--accent2);
-    }
-    .project-link {
-        align-self: flex-start;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--accent);
-        text-decoration: none;
-        margin-top: 0.2rem;
-    }
-    .project-link:hover {
-        text-decoration: underline;
-    }
-    .project-actions {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-top: 0.2rem;
-    }
-    .project-link-secondary {
-        color: var(--accent2);
+        color: var(--text-muted);
     }
 
     /* ── FOOTER ── */
     .footer {
-        width: 100%;
-        padding: 1.5rem;
-        text-align: center;
-        font-size: 0.78rem;
+        padding: 3rem 1.5rem;
         color: var(--text-muted);
-        opacity: 0.5;
+        font-size: 0.85rem;
+        text-align: center;
     }
 </style>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="bo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tibetan Document Rule Checker & Grammar Validator</title>
+  <meta name="description" content="Paste any Tibetan document to analyze syllable structure and identify broken grammar rules according to traditional Tibetan grammar.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Application Header -->
+  <header class="app-header">
+    <div class="brand-title">
+      <div class="brand-logo">༄༅།</div>
+      <div class="brand-text">
+        <h1>Tibetan Document Rule Checker</h1>
+        <p>Real-time Syllable Inspection & Grammar Error Diagnostic Engine</p>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Navigation Tabs -->
+      <nav class="nav-tab-group">
+        <a href="index.html" class="nav-tab-btn" title="Open Real-time Grammar Keyboard">⌨️ Keyboard & Inspector</a>
+        <a href="checker.html" class="nav-tab-btn active" title="Open Document Grammar Checker">📄 Document Rule Checker</a>
+      </nav>
+
+      <button id="btn-copy-report" class="btn-icon" title="Copy Error Diagnostic Summary to Clipboard">
+        📋 Copy Report
+      </button>
+      <button id="btn-export-json" class="btn-icon" title="Export Full Report as JSON">
+        📥 Export JSON
+      </button>
+    </div>
+  </header>
+
+  <main class="main-container document-checker-container">
+
+    <!-- Document Input & Quick Preset Samples -->
+    <section class="editor-card checker-input-card">
+      <div class="editor-toolbar">
+        <div class="editor-label">
+          <span>📄 Document Input</span>
+        </div>
+        <div class="checker-stats-bar">
+          <span class="stat-badge" id="badge-total-syllables">Syllables: 0</span>
+          <span class="stat-badge stat-valid" id="badge-valid-syllables">Valid: 0</span>
+          <span class="stat-badge stat-invalid" id="badge-invalid-syllables">Errors: 0</span>
+          <span class="stat-badge stat-accuracy" id="badge-accuracy">Accuracy: 100%</span>
+        </div>
+      </div>
+
+      <textarea id="doc-input" class="doc-textarea" placeholder="Paste Tibetan text or document here to check for grammar rule violations (e.g., invalid prefixes, improper superscripts/subscripts, illegal postfixes)..." rows="6"></textarea>
+
+      <!-- Quick Sample Buttons -->
+      <div class="samples-bar">
+        <span class="samples-label">Preset Samples:</span>
+        <button class="sample-chip" id="btn-sample-errors">⚠️ Load Sample with Grammar Errors</button>
+        <button class="sample-chip" id="btn-sample-valid">✅ Load Classical Sacred Text</button>
+        <button class="btn-icon btn-sm" id="btn-clear-doc" style="margin-left: auto;">🗑️ Clear Text</button>
+      </div>
+    </section>
+
+    <!-- Metrics Dashboard Row -->
+    <section class="metrics-grid">
+      <div class="metric-card" id="metric-total">
+        <div class="metric-title">Total Syllables</div>
+        <div class="metric-value" id="val-stat-total">0</div>
+        <div class="metric-subtitle">Processed Tokens</div>
+      </div>
+
+      <div class="metric-card metric-card-valid" id="metric-valid">
+        <div class="metric-title">Valid Syllables</div>
+        <div class="metric-value" id="val-stat-valid">0</div>
+        <div class="metric-subtitle">100% Correct</div>
+      </div>
+
+      <div class="metric-card metric-card-invalid" id="metric-invalid">
+        <div class="metric-title">Rule Violations</div>
+        <div class="metric-value" id="val-stat-invalid">0</div>
+        <div class="metric-subtitle" id="val-stat-accuracy">0.0% Error Rate</div>
+      </div>
+
+      <!-- Error Categories Breakdown -->
+      <div class="metric-card metric-card-categories">
+        <div class="metric-title">Violations by Category</div>
+        <div class="category-pills">
+          <span class="cat-pill" id="cat-prefix">Prefix: 0</span>
+          <span class="cat-pill" id="cat-superscript">Superscript: 0</span>
+          <span class="cat-pill" id="cat-subscript">Subscript: 0</span>
+          <span class="cat-pill" id="cat-vowel">Vowel: 0</span>
+          <span class="cat-pill" id="cat-suffix">Postfix: 0</span>
+          <span class="cat-pill" id="cat-secondSuffix">2nd Postfix: 0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Highlighted Document Reader View -->
+    <section class="inspector-card document-reader-card">
+      <div class="inspector-header">
+        <div class="inspector-title">
+          <span>🔍</span> Document Interactive Reader View
+        </div>
+        <div id="checker-status-badge" class="grammar-status-badge">
+          Ready for Analysis
+        </div>
+      </div>
+
+      <div id="document-reader" class="document-reader-box">
+        <div class="empty-reader-notice">
+          Paste a document above or click a preset sample to view highlighted syllable breakdown and rule diagnostics.
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Diagnostic Error Log Table -->
+    <section class="inspector-card error-log-card">
+      <div class="inspector-header error-log-header">
+        <div class="inspector-title">
+          <span>📋</span> Grammar Rule Violation Inspector & Diagnostic Log
+        </div>
+
+        <div class="filter-controls">
+          <select id="filter-category" class="mode-select-dropdown" title="Filter by Rule Category">
+            <option value="all">All Categories</option>
+            <option value="prefix">Prefix Rules (སྔོན་འཇུག་)</option>
+            <option value="superscript">Superscript Rules (མགོ་ཡིག་)</option>
+            <option value="subscript">Subscript Rules (འདོགས་ཡིག་)</option>
+            <option value="vowel">Vowel Rules (དབྱངས་)</option>
+            <option value="suffix">Postfix Rules (རྗེས་འཇུག་)</option>
+            <option value="secondSuffix">2nd Postfix Rules (ཡང་འཇུག་)</option>
+            <option value="structure">Structure Rules</option>
+          </select>
+          <input type="text" id="search-errors" class="search-input" placeholder="Search error log..." />
+        </div>
+      </div>
+
+      <div class="error-table-wrapper">
+        <table class="error-table" id="error-log-table">
+          <thead>
+            <tr>
+              <th>Line #</th>
+              <th>Broken Syllable</th>
+              <th>Category</th>
+              <th>Rule Section</th>
+              <th>Violation Explanation</th>
+              <th>Suggested Correction</th>
+            </tr>
+          </thead>
+          <tbody id="error-table-body">
+            <tr>
+              <td colspan="6" class="no-errors-cell">No grammar rule violations detected. Paste text or click a sample to begin inspection.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module" src="checker.js"></script>
+</body>
+</html>

@@ -81,9 +81,19 @@
             github: "https://github.com/RabjamX2/PokeGuesser/tree/javascript",
             emoji: "🎮",
         },
+        {
+            title: "Tibetan Grammar Keyboard & Validator",
+            desc: "Interactive web keyboard supporting EWTS/Wylie, Sambhota & QWERTY presets, featuring real-time 8-slot Tibetan syllable component breakdown and document rule error diagnostics.",
+            tags: ["JavaScript", "Tibetan Grammar", "Parser Engine", "HTML5/CSS3"],
+            link: "/keyboard/",
+            linkLabel: "Open Keyboard →",
+            github: "https://github.com/RabjamX2/rabjam-keyboard",
+            emoji: "⌨️",
+        },
     ];
 
     const links = [
+        { label: "Business Consulting", href: "/portfolio", icon: "💼", internal: true },
         { label: "GitHub Profile", href: "https://github.com/RabjamX2", icon: "⌨" },
         { label: "Email Contact", href: "mailto:rabjam@rabjam.com", icon: "✉" },
     ];
@@ -102,8 +112,12 @@
             <p class="hero-role">{role}</p>
             <p class="hero-bio">{bio}</p>
             <div class="hero-links">
-                {#each links as { label, href, icon }}
-                    <a class="hero-link" {href} target="_blank" rel="noopener">{icon} {label}</a>
+                {#each links as { label, href, icon, internal }}
+                    {#if internal}
+                        <a class="hero-link" {href}>{icon} {label}</a>
+                    {:else}
+                        <a class="hero-link" {href} target="_blank" rel="noopener">{icon} {label}</a>
+                    {/if}
                 {/each}
             </div>
         </div>
