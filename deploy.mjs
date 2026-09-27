@@ -74,10 +74,7 @@ const remoteScript = [
     `git fetch origin ${JSON.stringify(branch)}`,
     `git checkout ${JSON.stringify(branch)}`,
     `git reset --hard origin/${branch}`,
-    "npm ci --prefix server",
     "npm ci --prefix client",
-    "(cd server && npx prisma generate)",
-    "(cd server && npx prisma migrate deploy)",
     "npm run build --prefix client",
     restartCommand ? restartCommand : defaultRestartCmd,
 ].join(" && ");

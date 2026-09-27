@@ -26,19 +26,10 @@ jobs:
           cache: npm
           cache-dependency-path: |
             client/package-lock.json
-            server/package-lock.json
-
-      - name: Install server dependencies
-        working-directory: server
-        run: npm ci
 
       - name: Install client dependencies
         working-directory: client
         run: npm ci
-
-      - name: Run production checks
-        working-directory: server
-        run: npx prisma generate
 
       - name: Build client
         working-directory: client
