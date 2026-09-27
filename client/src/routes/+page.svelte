@@ -158,10 +158,10 @@
                     </div>
                     <div class="project-actions">
                         {#if project.link}
-                            <a class="project-btn" href={project.link}>{project.linkLabel}</a>
+                            <a class="project-btn" href={project.link} data-sveltekit-reload>{project.linkLabel}</a>
                         {/if}
                         {#if project.secondaryLink}
-                            <a class="project-btn project-btn-secondary" href={project.secondaryLink}
+                            <a class="project-btn project-btn-secondary" href={project.secondaryLink} data-sveltekit-reload
                                 >{project.secondaryLabel}</a
                             >
                         {/if}

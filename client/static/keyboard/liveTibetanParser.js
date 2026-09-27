@@ -189,8 +189,8 @@ export function canAcceptChar(state, inputChar) {
 /**
  * Pushes a character into the state machine, advancing component slots.
  */
-export function pushChar(state, inputChar) {
-  if (!canAcceptChar(state, inputChar)) {
+export function pushChar(state, inputChar, isStrict = true) {
+  if (isStrict && !canAcceptChar(state, inputChar)) {
     return false;
   }
 
@@ -212,7 +212,7 @@ export function pushChar(state, inputChar) {
 
   // Restart syllable if currently complete and a base consonant is typed
   if (state.isComplete) {
-    if (TIBETAN_BASE_CONSONANTS.has(inputChar)) {
+    if (TIBETAN_BASE_CONSONANTS.has(inputChar) || !isStrict) {
       state.chars = [inputChar];
       state.prefix = '';
       state.superscript = '';
@@ -248,6 +248,9 @@ export function pushChar(state, inputChar) {
       if (state.root && SUBSCRIPT_TARGETS[subSymbol] && SUBSCRIPT_TARGETS[subSymbol].has(state.root)) {
         state.subscript = subSymbol;
         return true;
+      } else if (!isStrict) {
+        state.subscript = subSymbol;
+        return true;
       }
     } else {
       // Subjoined consonant (e.g. ྒ under superscript ས)
@@ -256,13 +259,24 @@ export function pushChar(state, inputChar) {
         state.superscript = state.root;
         state.root = baseRoot;
         return true;
+      } else if (!isStrict) {
+        if (!state.superscript && state.root) {
+          state.superscript = state.root;
+          state.root = baseRoot;
+        } else {
+          state.subscript = inputChar;
+        }
+        return true;
       }
     }
 
-    // Invalid subscript/superscript target
-    state.chars.pop();
-    state.history.pop();
-    return false;
+    if (isStrict) {
+      // Invalid subscript/superscript target
+      state.chars.pop();
+      state.history.pop();
+      return false;
+    }
+    return true;
   }
 
   // 3. Vowels

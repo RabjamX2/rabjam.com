@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Keyboard (Local SvelteKit)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173/keyboard/",
+      "webRoot": "${workspaceFolder}/client",
+      "preLaunchTask": "Start SvelteKit Dev Server"
+    },
+    {
+      "name": "Launch Document Checker (Local SvelteKit)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173/keyboard/checker.html",
+      "webRoot": "${workspaceFolder}/client",
+      "preLaunchTask": "Start SvelteKit Dev Server"
+    },
+    {
+      "name": "Launch Standalone Keyboard (Port 8080)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/client/static/keyboard",
+      "preLaunchTask": "Start Keyboard Standalone Server"
+    }
+  ]
+}

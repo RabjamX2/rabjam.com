@@ -10,12 +10,37 @@ import {
 
 import { syllableToWylie } from './wylieConverter.js';
 import { parseTibetanSyllable } from './tibetanParser.js';
+import { validateTibetanSyllable } from './tibetanValidator.js';
 
 // Global Application State
 let committedText = '';
 let syllableState = createSyllableState();
 let currentLayout = 'consonants';
 let soundEnabled = true;
+let strictMode = localStorage.getItem('tibetan_strict_mode') !== 'false';
+
+// Helper to update Strict Rules UI button
+function updateStrictToggleUI() {
+  const strictBtn = document.getElementById('btn-strict-toggle');
+  const strictIcon = document.getElementById('strict-icon');
+  const strictStatus = document.getElementById('strict-status');
+
+  if (strictBtn && strictIcon && strictStatus) {
+    if (strictMode) {
+      strictIcon.textContent = '🛡️';
+      strictStatus.textContent = 'STRICT';
+      strictBtn.classList.remove('mode-free');
+      strictBtn.classList.add('mode-strict');
+      strictBtn.title = 'Strict grammar rule enforcement active (disallows invalid keypresses). Click to allow free typing.';
+    } else {
+      strictIcon.textContent = '🔓';
+      strictStatus.textContent = 'FREE';
+      strictBtn.classList.remove('mode-strict');
+      strictBtn.classList.add('mode-free');
+      strictBtn.title = 'Free typing active (allows invalid keypresses/entries). Click to enforce strict grammar rules.';
+    }
+  }
+}
 
 // Web Audio API Sound Synthesizer
 let audioCtx = null;
@@ -366,9 +391,18 @@ function renderApp() {
   wylieTextEl.textContent = fullWylie || '...';
 
   // 3. Update Component Inspector Slots
+  // In free-typing mode, try parsing current active string if slots aren't populated
+  let displayState = syllableState;
+  if (!strictMode && currentActiveString && (!syllableState.root || syllableState.chars.length > 1)) {
+    const parsed = parseTibetanSyllable(currentActiveString);
+    if (parsed && parsed.root) {
+      displayState = parsed;
+    }
+  }
+
   const slots = ['prefix', 'superscript', 'root', 'subscript', 'vowel', 'suffix', 'secondSuffix', 'particleVowel'];
   slots.forEach(slot => {
-    const val = syllableState[slot] || '-';
+    const val = displayState[slot] || '-';
     slotElements[slot].textContent = val;
     if (val !== '-') {
       slotCards[slot].classList.add('has-value');
@@ -376,6 +410,25 @@ function renderApp() {
       slotCards[slot].classList.remove('has-value');
     }
   });
+
+  // 3b. Update Grammar Validation Status Badge
+  if (currentActiveString) {
+    const validation = validateTibetanSyllable(currentActiveString);
+    if (validation.isValid) {
+      grammarStatusEl.textContent = 'Grammar Valid';
+      grammarStatusEl.className = 'grammar-status-badge';
+      grammarStatusEl.title = 'Current syllable conforms to all grammar rules';
+    } else {
+      const firstErr = validation.errors[0];
+      grammarStatusEl.textContent = firstErr ? `⚠️ ${firstErr.title}` : 'Grammar Invalid';
+      grammarStatusEl.className = 'grammar-status-badge status-invalid';
+      grammarStatusEl.title = validation.errors.map(e => e.message).join(' | ');
+    }
+  } else {
+    grammarStatusEl.textContent = strictMode ? 'Grammar Valid' : 'Free Typing Active';
+    grammarStatusEl.className = 'grammar-status-badge' + (strictMode ? '' : ' status-warning');
+    grammarStatusEl.title = strictMode ? 'Strict grammar rule enforcement active' : 'Free typing mode: All key combinations permitted';
+  }
 
   // 4. Update Keyboard Key States (Active vs Grayed-out Disabled)
   renderKeyboard();
@@ -482,7 +535,7 @@ function renderKeyboard() {
           } else {
             keyBtn.innerHTML = `${keyChar}${cornerChar ? `<span class="key-shift-corner">${cornerChar}</span>` : ''}<span class="key-sublabel">${item.key}</span>`;
 
-            const isAllowed = canAcceptChar(syllableState, keyChar);
+            const isAllowed = !strictMode || canAcceptChar(syllableState, keyChar);
             if (isAllowed) {
               keyBtn.classList.add('key-allowed');
               keyBtn.onclick = () => {
@@ -530,7 +583,7 @@ function renderKeyboard() {
           const sublabel = TIBETAN_TO_WYLIE_KEY[keyChar] || '';
           keyBtn.innerHTML = `${keyChar}${sublabel ? `<span class="key-sublabel">${sublabel}</span>` : ''}`;
 
-          const isAllowed = canAcceptChar(syllableState, keyChar);
+          const isAllowed = !strictMode || canAcceptChar(syllableState, keyChar);
           if (isAllowed) {
             keyBtn.classList.add('key-allowed');
             keyBtn.onclick = () => handleInputChar(keyChar, keyBtn);
@@ -581,12 +634,10 @@ function renderKeyboard() {
  * Handles character input from virtual or physical keyboard
  */
 function handleInputChar(char, btnElement = null) {
-  const success = pushChar(syllableState, char);
+  const success = pushChar(syllableState, char, strictMode);
 
   if (success) {
     playKeySound('click');
-    grammarStatusEl.textContent = 'Grammar Valid';
-    grammarStatusEl.className = 'grammar-status-badge';
 
     // If syllable was completed (Tsek/Shad typed), commit active string to committedText
     if (syllableState.isComplete) {
@@ -658,6 +709,19 @@ function triggerKeyError(btnElement = null) {
  * Event Listeners & Hardware Keyboard Binding
  */
 function initEventListeners() {
+  // Strict Rules Toggle Button
+  const strictBtn = document.getElementById('btn-strict-toggle');
+  if (strictBtn) {
+    updateStrictToggleUI();
+    strictBtn.onclick = () => {
+      playKeySound('click');
+      strictMode = !strictMode;
+      localStorage.setItem('tibetan_strict_mode', strictMode ? 'true' : 'false');
+      updateStrictToggleUI();
+      renderApp();
+    };
+  }
+
   // Sound Toggle Button
   document.getElementById('btn-sound-toggle').onclick = () => {
     soundEnabled = !soundEnabled;
@@ -898,7 +962,7 @@ function initEventListeners() {
         subjoinQueued = false;
         const normChar = activeKeyMap[e.key];
         const subChar = getSubjoinedChar(normChar);
-        if (canAcceptChar(syllableState, subChar)) {
+        if (!strictMode || canAcceptChar(syllableState, subChar)) {
           e.preventDefault();
           handleInputChar(subChar);
           return;
@@ -915,7 +979,7 @@ function initEventListeners() {
     if ((hardwareInputMode === 'explicit' || currentPreset === 'mac-qwerty') && e.shiftKey) {
       const upperKey = e.key.toUpperCase();
       const subChar = activeSubjoinedMap[upperKey] || (activeKeyMap[e.key.toLowerCase()] ? getSubjoinedChar(activeKeyMap[e.key.toLowerCase()]) : null);
-      if (subChar && canAcceptChar(syllableState, subChar)) {
+      if (subChar && (!strictMode || canAcceptChar(syllableState, subChar))) {
         e.preventDefault();
         handleInputChar(subChar);
         return;
@@ -927,7 +991,7 @@ function initEventListeners() {
       const baseChar = activeKeyMap[e.key];
       if (syllableState.root && !syllableState.inherentVowelSealed && !syllableState.vowel && !syllableState.subscript && !syllableState.suffix && !syllableState.superscript) {
         const subChar = getSubjoinedChar(baseChar);
-        if (subChar !== baseChar && canAcceptChar(syllableState, subChar)) {
+        if (subChar !== baseChar && (!strictMode || canAcceptChar(syllableState, subChar))) {
           e.preventDefault();
           handleInputChar(subChar);
           return;

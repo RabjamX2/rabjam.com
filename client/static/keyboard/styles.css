@@ -150,6 +150,17 @@ body {
   color: var(--primary-gold);
 }
 
+.btn-icon.mode-strict {
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--accent-emerald);
+}
+
+.btn-icon.mode-free {
+  border-color: rgba(245, 158, 11, 0.5);
+  color: var(--primary-gold);
+  background: rgba(245, 158, 11, 0.1);
+}
+
 .main-container {
   width: 100%;
   max-width: 1100px;
@@ -295,10 +306,17 @@ body {
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-.grammar-status-badge.status-blocked {
+.grammar-status-badge.status-blocked,
+.grammar-status-badge.status-invalid {
   background: rgba(239, 68, 68, 0.15);
   color: #ef4444;
   border-color: rgba(239, 68, 68, 0.3);
+}
+
+.grammar-status-badge.status-warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--primary-gold);
+  border-color: rgba(245, 158, 11, 0.3);
 }
 
 .components-grid {
