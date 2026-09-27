@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MinesWeeper</title>
+        <link rel="icon" type="image/icon" href="Resources/favicon.ico" />
+        <link rel="stylesheet" href="styles.css" />
+        <meta name="description" content="MinesWeeper with a twist?" />
+    </head>
+
+    <body>
+        <table style="margin: auto">
+            <tbody>
+                <tr>
+                    <td>
+                        <div id="game-container">
+                            <div style="margin-top: 40px; margin-bottom: 10px; text-align: center">
+                                <button id="startGame">Start</button>
+                            </div>
+                            <div id="board" class="board" ondrag="return false;" ondragstart="return false;"></div>
+                            <div style="display: flex; align-items: center"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <script src="script.js"></script>
+    </body>
+</html>

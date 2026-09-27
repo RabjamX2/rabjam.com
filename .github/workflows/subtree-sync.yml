@@ -1,0 +1,59 @@
+name: Auto Sync Standalone Repositories
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'client/src/routes/games/connect4/**'
+      - 'client/src/routes/games/minesweeper/**'
+      - 'client/static/games/guesser-games/**'
+      - '.github/workflows/subtree-sync.yml'
+  workflow_dispatch:
+
+jobs:
+  sync-subtrees:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.SYNC_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git Credentials
+        run: |
+          git config user.name "RabjamX2"
+          git config user.email "rabjam@rabjam.com"
+          # Clear default GITHUB_TOKEN header so PAT authentication is enforced
+          git config --global --unset-all http.https://github.com/.extraheader || true
+
+      - name: Sync Connect4 Subtree
+        run: |
+          TOKEN="${{ secrets.SYNC_PAT }}"
+          if [ -z "$TOKEN" ]; then
+            echo "::warning ::SYNC_PAT secret is missing."
+            exit 0
+          fi
+          echo "Splitting Connect4..."
+          COMMIT_ID=$(git subtree split --prefix=client/src/routes/games/connect4 main)
+          echo "Pushing Connect4 commit $COMMIT_ID to RabjamX2/connect4..."
+          git push "https://x-access-token:${TOKEN}@github.com/RabjamX2/connect4.git" "${COMMIT_ID}:refs/heads/main" --force
+
+      - name: Sync Minesweeper Subtree
+        run: |
+          TOKEN="${{ secrets.SYNC_PAT }}"
+          if [ -z "$TOKEN" ]; then exit 0; fi
+          echo "Splitting Minesweeper..."
+          COMMIT_ID=$(git subtree split --prefix=client/src/routes/games/minesweeper main)
+          echo "Pushing Minesweeper commit $COMMIT_ID to RabjamX2/minesweeper..."
+          git push "https://x-access-token:${TOKEN}@github.com/RabjamX2/minesweeper.git" "${COMMIT_ID}:refs/heads/main" --force
+
+      - name: Sync PokeGuesser Subtree
+        run: |
+          TOKEN="${{ secrets.SYNC_PAT }}"
+          if [ -z "$TOKEN" ]; then exit 0; fi
+          echo "Splitting PokeGuesser..."
+          COMMIT_ID=$(git subtree split --prefix=client/static/games/guesser-games main)
+          echo "Pushing PokeGuesser commit $COMMIT_ID to RabjamX2/PokeGuesser..."
+          git push "https://x-access-token:${TOKEN}@github.com/RabjamX2/PokeGuesser.git" "${COMMIT_ID}:refs/heads/javascript" --force

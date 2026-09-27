@@ -1,0 +1,57 @@
+body {
+    background-color: #6e6e6e;
+}
+/*
+#game-container {
+    width: 500px;
+}*/
+
+.board {
+    display: grid;
+    user-select: none; /* Standard syntax */
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+}
+
+.cell {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px solid #ccc;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-weight: bold;
+}
+
+.hidden {
+    box-shadow: inset 0.2em 0.2em 0.2em 0 rgba(255, 255, 255, 0.5), inset -0.2em -0.2em 0.2em 0 rgba(0, 0, 0, 0.5);
+    background-color: rgb(184, 184, 184);
+    /* border: 4px solid #000000; */
+}
+
+.hidden:hover {
+    -webkit-filter: brightness(50%);
+    filter: brightness(50%);
+}
+
+.mine {
+    background-image: url("/Front/Resources/mine.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.flagged {
+    background-image: url("/Front/Resources/flag.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70%;
+    position: relative;
+}
+
+.mistake {
+    background-color: rgba(199, 0, 0, 0.507);
+}

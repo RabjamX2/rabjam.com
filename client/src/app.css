@@ -1,0 +1,89 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface2: #0f3460;
+    --accent: #e94560;
+    --accent2: #f5a623;
+    --text: #eaeaea;
+    --text-muted: #888;
+    --green: #2d6a4f;
+    --green-felt: #1b4332;
+    --radius: 8px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    min-height: 100vh;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.5rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition:
+        opacity 0.15s,
+        transform 0.1s;
+}
+button:hover:not(:disabled) {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+}
+.btn-secondary {
+    background: var(--surface2);
+    color: var(--text);
+}
+.btn-success {
+    background: var(--green);
+    color: #fff;
+}
+.btn-warning {
+    background: var(--accent2);
+    color: #000;
+}
+
+input,
+textarea {
+    background: var(--surface2);
+    border: 1px solid #444;
+    border-radius: var(--radius);
+    color: var(--text);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    width: 100%;
+}
+input:focus,
+textarea:focus {
+    outline: 2px solid var(--accent);
+    border-color: transparent;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
